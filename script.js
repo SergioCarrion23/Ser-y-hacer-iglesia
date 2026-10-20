@@ -1,291 +1,304 @@
-/* ============================================================
-   SER Y HACER IGLESIA — Interacciones
-   ============================================================ */
-
 (() => {
-  "use strict";
+  'use strict';
+  const header = document.querySelector('.site-header');
+  const nav = document.querySelector('.nav');
+  const indicator = document.querySelector('.nav__indicator');
+  const menuButton = document.querySelector('.menu-toggle');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  const main = document.querySelector('main');
+  const desktop = window.matchMedia('(min-width: 1081px)');
 
-  const header = document.getElementById("header");
-  const nav = document.getElementById("nav");
-  const indicator = nav?.querySelector(".nav__indicator");
-  const links = nav ? [...nav.querySelectorAll(".nav__link")] : [];
-  const menuToggle = document.getElementById("menuToggle");
-  const mobileMenu = document.getElementById("mobileMenu");
-  const mobileLinks = mobileMenu ? [...mobileMenu.querySelectorAll("a")] : [];
-
-  const EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
-
-  /* ---------- 1. Header con estado al hacer scroll ---------- */
-  const onScroll = () => {
-    header?.classList.toggle("is-scrolled", window.scrollY > 12);
-  };
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
-
-  /* ---------- 2. Indicador de nav que se desliza (estilo Framer) ---------- */
-  const moveIndicator = (link) => {
-    if (!indicator || !nav) return;
+  function moveIndicator(link) {
     const navRect = nav.getBoundingClientRect();
     const rect = link.getBoundingClientRect();
     indicator.style.width = `${rect.width}px`;
     indicator.style.height = `${rect.height}px`;
     indicator.style.transform = `translateX(${rect.left - navRect.left}px)`;
-  };
-
-  const activateLink = (link) => {
-    if (!nav) return;
-    nav.classList.add("is-hovering");
-    links.forEach((l) => l.classList.remove("is-active"));
-    link.classList.add("is-active");
-    moveIndicator(link);
-  };
-
-  const resetIndicator = () => {
-    if (!nav) return;
-    nav.classList.remove("is-hovering");
-    // Mantener activo el enlace de la sección visible
-    const active = links.find((l) => l.classList.contains("is-current")) || null;
-    links.forEach((l) => l.classList.toggle("is-active", l === active));
-    if (active) moveIndicator(active);
-    else if (indicator) indicator.style.opacity = "0";
-  };
-
-  links.forEach((link) => {
-    link.addEventListener("mouseenter", () => activateLink(link));
-  });
-
-  nav?.addEventListener("mouseleave", resetIndicator);
-
-  window.addEventListener("resize", () => {
-    const current = links.find((l) => l.classList.contains("is-active"));
-    if (current) moveIndicator(current);
-  });
-
-  /* ---------- 3. Resaltar sección visible en el scroll ---------- */
-  const sections = links
-    .map((l) => document.querySelector(l.getAttribute("href")))
-    .filter(Boolean);
-
-  if (sections.length && "IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const link = links.find(
-            (l) => l.getAttribute("href") === `#${entry.target.id}`
-          );
-          if (!link) return;
-          links.forEach((l) => {
-            l.classList.remove("is-current");
-            l.classList.remove("is-active");
-          });
-          link.classList.add("is-current");
-          if (!nav.classList.contains("is-hovering")) {
-            link.classList.add("is-active");
-            moveIndicator(link);
-          }
-        });
-      },
-      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
-    );
-    sections.forEach((s) => observer.observe(s));
+    nav.classList.add('is-hovering');
   }
-
-  /* ---------- 4. Detección de puntero fino ---------- */
-  const fine = window.matchMedia("(pointer: fine)").matches;
-
-  /* ---------- 5. Menú móvil ---------- */
-  const setMenu = (open) => {
-    menuToggle?.classList.toggle("is-open", open);
-    mobileMenu?.classList.toggle("is-open", open);
-    document.body.classList.toggle("menu-open", open);
-    menuToggle?.setAttribute("aria-expanded", String(open));
-    menuToggle?.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
-    mobileMenu?.setAttribute("aria-hidden", String(!open));
-  };
-
-  menuToggle?.addEventListener("click", () => {
-    setMenu(!mobileMenu.classList.contains("is-open"));
+  document.querySelectorAll('.nav__link').forEach(link => {
+    link.addEventListener('mouseenter', () => moveIndicator(link));
+    link.addEventListener('focus', () => moveIndicator(link));
+  });
+  nav.addEventListener('mouseleave', () => nav.classList.remove('is-hovering'));
+  nav.addEventListener('focusout', event => {
+    if (!nav.contains(event.relatedTarget)) nav.classList.remove('is-hovering');
   });
 
-  mobileLinks.forEach((link) => link.addEventListener("click", () => setMenu(false)));
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") setMenu(false);
-  });
-
-  /* ---------- 6. Sincronizar las dos capas de video ----------
-     La capa con blur y la capa nítida deben reproducirse idénticas
-     para que la máscara no muestre costuras. */
-  const heroVideos = [...document.querySelectorAll(".hero__bg, .hero__bg-blur video")];
-  if (heroVideos.length > 1) {
-    const [main, ...rest] = heroVideos;
-
-    const syncVideos = () => {
-      rest.forEach((v) => {
-        // Si el desfase supera un umbral perceptible, reajusta
-        if (Math.abs(v.currentTime - main.currentTime) > 0.06) {
-          try { v.currentTime = main.currentTime; } catch (_) {}
-        }
-        // Igualar estado de reproducción
-        if (main.paused && !v.paused) v.pause();
-        if (!main.paused && v.paused) v.play().catch(() => {});
-      });
-    };
-
-    // El video principal marca el ritmo; el secundario lo sigue
-    main.addEventListener("play", syncVideos);
-    main.addEventListener("seeked", syncVideos);
-    main.addEventListener("timeupdate", syncVideos);
-    main.addEventListener("playing", syncVideos);
-
-    // Si el blur queda pausado por el navegador, arrancarlo
-    rest.forEach((v) => {
-      v.addEventListener("loadeddata", () => {
-        try { v.currentTime = main.currentTime; } catch (_) {}
-        v.play().catch(() => {});
-      });
-    });
+  function setMenu(open, restoreFocus = false) {
+    menuButton.classList.toggle('is-open', open);
+    mobileMenu.classList.toggle('is-open', open);
+    document.body.classList.toggle('menu-open', open);
+    menuButton.setAttribute('aria-expanded', String(open));
+    menuButton.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    mobileMenu.setAttribute('aria-hidden', String(!open));
+    mobileMenu.inert = !open;
+    main.inert = open;
+    if (restoreFocus) menuButton.focus();
   }
-
-  /* ---------- 7. Formulario liquid glass en el hero ----------
-     Al confirmar asistencia: los dos botones salen y el formulario entra.
-     Al volver: el formulario se recoge y los botones regresan. */
-  const openBtn = document.getElementById("openForm");
-  const closeBtn = document.getElementById("closeForm");
-  const heroActions = document.getElementById("heroActions");
-  const glassForm = document.getElementById("registroForm");
-
-  const setForm = (open) => {
-    if (!glassForm || !heroActions) return;
-
-    if (open) {
-      // 1. Los botones salen con un fundido + desenfoque
-      heroActions.classList.add("is-leaving");
-
-      // 2. Cuando ya casi salieron, ocultamos los botones y mostramos el formulario
-      window.setTimeout(() => {
-        heroActions.hidden = true;
-
-        glassForm.setAttribute("aria-hidden", "false");
-        glassForm.dataset.open = "true";
-        openBtn?.setAttribute("aria-expanded", "true");
-
-        // Medimos el contenido real del formulario (no el elemento recortado).
-        // Los hijos directos suman la altura natural: cabecera + rejilla + pie.
-        const natural = [...glassForm.children].reduce(
-          (sum, el) => sum + el.getBoundingClientRect().height,
-          0
-        );
-        const target = Math.ceil(natural + 64); // + padding superior/inferior
-
-        // Estado inicial reproducible: sin clase y altura 0, forzamos recálculo.
-        void glassForm.offsetHeight;
-        glassForm.style.maxHeight = "0px";
-
-        // Siguiente frame: arrancamos la transición hacia la altura medida.
-        requestAnimationFrame(() => {
-          glassForm.classList.add("is-open");
-          glassForm.style.maxHeight = target + "px";
-        });
-
-        // Al terminar la entrada, liberamos la restricción de altura para que
-        // nunca se recorte (p. ej. mensajes de error de validación).
-        glassForm.addEventListener("transitionend", function onOpen(ev) {
-          if (ev.propertyName !== "max-height" || !glassForm.classList.contains("is-open")) return;
-          glassForm.style.maxHeight = "none";
-          glassForm.removeEventListener("transitionend", onOpen);
-        });
-
-        // 3. Llevamos el foco al primer campo (buena accesibilidad)
-        window.setTimeout(() => {
-          glassForm.querySelector(".field__input")?.focus({ preventScroll: true });
-        }, 520);
-      }, 420);
-    } else {
-      // 1. El formulario se recoge
-      glassForm.setAttribute("aria-hidden", "true");
-      glassForm.dataset.open = "false";
-      openBtn?.setAttribute("aria-expanded", "false");
-
-      // Si quedó liberado en "none", fijamos primero la altura actual real
-      // para que la transición hacia 0 sea visible.
-      if (getComputedStyle(glassForm).maxHeight === "none") {
-        glassForm.style.maxHeight = glassForm.getBoundingClientRect().height + "px";
-        void glassForm.offsetHeight;
-      }
-      glassForm.classList.remove("is-open");
-      glassForm.style.maxHeight = "0px";
-
-      // 2. Los botones vuelven, ya recogido el formulario
-      window.setTimeout(() => {
-        heroActions.hidden = false;
-        void heroActions.offsetHeight;
-        heroActions.classList.remove("is-leaving");
-        openBtn?.focus({ preventScroll: true });
-      }, 420);
+  setMenu(false);
+  menuButton.addEventListener('click', () => setMenu(menuButton.getAttribute('aria-expanded') !== 'true'));
+  mobileMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenu(false, true)));
+  desktop.addEventListener('change', event => { if (event.matches) setMenu(false); });
+  document.addEventListener('keydown', event => {
+    if (menuButton.getAttribute('aria-expanded') !== 'true') return;
+    if (event.key === 'Escape') setMenu(false, true);
+    if (event.key === 'Tab') {
+      const focusables = [...header.querySelectorAll('a,button')].filter(element => element.offsetParent !== null && !element.closest('[inert]'));
+      const first = focusables[0];
+      const last = focusables.at(-1);
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     }
+  });
+
+  const video = document.querySelector('.hero__bg');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  function syncVideo() {
+    if (reducedMotion.matches || document.hidden) video.pause();
+    else video.play().catch(() => {});
+  }
+  video.muted = true;
+  syncVideo();
+  video.addEventListener('loadeddata', syncVideo);
+  reducedMotion.addEventListener('change', syncVideo);
+  document.addEventListener('visibilitychange', syncVideo);
+
+  /* Inline RSVP: merge the actual hero actions, then expand their glass surface. */
+  const hero = document.querySelector('.hero');
+  const heroIntro = document.querySelector('.hero__intro');
+  const heroActions = document.querySelector('.hero__actions');
+  const actionButtons = [...heroActions.querySelectorAll('.wave-btn')];
+  const rsvpPanel = document.querySelector('.rsvp-panel');
+  const glassShell = document.querySelector('.glass-shell');
+  const panelContent = document.querySelector('.rsvp-panel__content');
+  const rsvpTriggers = [...document.querySelectorAll('[data-open-rsvp]')];
+  const rsvpForm = document.querySelector('#rsvp-form');
+  const editView = document.querySelector('.rsvp-edit');
+  const reviewView = document.querySelector('.rsvp-review');
+  let rsvpState = 'closed';
+  let returnTo = null;
+  let closeAfterOpening = false;
+  let viewChanging = false;
+  const motionOff = () => reducedMotion.matches || !Element.prototype.animate;
+  const center = rect => ({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+  const animate = (element, frames, options) => {
+    const animation = element.animate(frames, { fill: 'both', easing: 'cubic-bezier(.22,1,.36,1)', ...options });
+    return animation;
   };
-
-  openBtn?.addEventListener("click", (e) => {
-    e.preventDefault();
-    setForm(true);
-  });
-
-  closeBtn?.addEventListener("click", () => setForm(false));
-
-  // Esc cierra el formulario
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && glassForm?.dataset.open === "true") setForm(false);
-  });
-
-  /* ---------- 7b. Contador de acompañantes (− / +) ---------- */
-  const stepper = glassForm?.querySelector(".stepper");
-  if (stepper) {
-    const input = stepper.querySelector(".stepper__input");
-    const dec = stepper.querySelector('[data-step="-1"]');
-    const inc = stepper.querySelector('[data-step="1"]');
-
-    const clampVal = () => {
-      const min = Number(input.min) || 0;
-      const max = Number(input.max) || 20;
-      const v = Math.round(Number(input.value));
-      const safe = Number.isFinite(v) ? Math.min(Math.max(v, min), max) : min;
-      input.value = String(safe);
-      dec.disabled = safe <= min;
-      inc.disabled = safe >= max;
-      return safe;
-    };
-
-    const bump = (delta) => {
-      const min = Number(input.min) || 0;
-      const max = Number(input.max) || 20;
-      const next = Math.min(Math.max(clampVal() + delta, min), max);
-      input.value = String(next);
-      clampVal();
-      input.dispatchEvent(new Event("input", { bubbles: true }));
-    };
-
-    dec.addEventListener("click", () => bump(-1));
-    inc.addEventListener("click", () => bump(1));
-    input.addEventListener("input", clampVal);
-    input.addEventListener("blur", clampVal);
-    clampVal();
+  const finish = animations => Promise.all(animations.map(animation => animation.finished.catch(() => {})));
+  const clearAnimations = animations => animations.forEach(animation => animation.cancel());
+  function setRsvpLayout(open) {
+    hero.classList.toggle('is-registering', open);
+    heroIntro.hidden = open;
+    heroActions.hidden = open;
+    rsvpPanel.hidden = !open;
+    rsvpTriggers.forEach(trigger => trigger.setAttribute('aria-expanded', String(open)));
+  }
+  function focusForm() {
+    const target = reviewView.hidden ? document.querySelector('#rsvp-title') : document.querySelector('#review-title');
+    const rect = rsvpPanel.getBoundingClientRect();
+    if (rect.top < 12 || rect.top > window.innerHeight / 2) rsvpPanel.scrollIntoView({ block: 'start', behavior: 'instant' });
+    target.focus({ preventScroll: true });
   }
 
-  // Envío: validación mínima + estado de éxito (sin backend todavía)
-  glassForm?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    if (!glassForm.checkValidity()) {
-      glassForm.reportValidity();
+  async function openRsvp(trigger) {
+    if (rsvpState !== 'closed') {
+      if (rsvpState === 'open') focusForm();
       return;
     }
-    const label = glassForm.querySelector(".neu-btn__label");
-    if (label) label.textContent = "¡Tu lugar quedó guardado!";
-    const foot = glassForm.querySelector(".glass-form__foot");
-    foot?.classList.add("is-success");
+    rsvpState = 'opening';
+    returnTo = trigger;
+    closeAfterOpening = false;
+    if (menuButton.getAttribute('aria-expanded') === 'true') setMenu(false);
+    const actionsRect = heroActions.getBoundingClientRect();
+    if (actionsRect.top < 0 || actionsRect.bottom > window.innerHeight) heroActions.scrollIntoView({ block: 'center', behavior: 'instant' });
+    hero.classList.add('has-rsvp-interaction');
+    heroActions.inert = true;
+    rsvpTriggers.forEach(button => button.setAttribute('aria-expanded', 'true'));
+
+    if (!motionOff()) {
+      const rects = actionButtons.map(button => button.getBoundingClientRect());
+      const target = center(heroActions.getBoundingClientRect());
+      const fusion = document.createElement('div');
+      fusion.className = 'liquid-fusion-layer';
+      fusion.setAttribute('aria-hidden', 'true');
+      const bounds = {
+        left: Math.min(...rects.map(rect => rect.left)) - 24,
+        top: Math.min(...rects.map(rect => rect.top)) - 24,
+        right: Math.max(...rects.map(rect => rect.right)) + 24,
+        bottom: Math.max(...rects.map(rect => rect.bottom)) + 24
+      };
+      Object.assign(fusion.style, { inset: 'auto', left: `${bounds.left}px`, top: `${bounds.top}px`, width: `${bounds.right - bounds.left}px`, height: `${bounds.bottom - bounds.top}px` });
+      document.body.append(fusion);
+      const introExit = animate(heroIntro, [{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-8px)' }], { duration: 140 });
+      const outgoing = [
+        introExit,
+        animate(heroActions, [{ opacity: 1 }, { opacity: 0 }], { duration: 110 })
+      ];
+      rects.forEach(rect => {
+        const blob = document.createElement('div');
+        blob.className = 'liquid-blob';
+        Object.assign(blob.style, { left: `${rect.left - bounds.left}px`, top: `${rect.top - bounds.top}px`, width: `${rect.width}px`, height: `${rect.height}px` });
+        fusion.append(blob);
+        const origin = center(rect);
+        outgoing.push(animate(blob, [
+          { transform: 'translate(0,0) scale(1)', opacity: 0 },
+          { transform: 'translate(0,0) scale(1)', opacity: .9, offset: .12 },
+          { transform: `translate(${target.x - origin.x}px,${target.y - origin.y}px) scale(.96,1.05)`, opacity: .9 }
+        ], { duration: 300, easing: 'cubic-bezier(.4,0,.2,1)' }));
+      });
+      // Grow the glass while the buttons are still merging, on one overlapping timeline.
+      await finish([introExit]);
+      setRsvpLayout(true);
+      const panelRect = rsvpPanel.getBoundingClientRect();
+      const destination = center(panelRect);
+      const originTransform = `translate(${target.x - destination.x}px,${target.y - destination.y}px) scale(${Math.min(245, panelRect.width * .8) / panelRect.width},${58 / panelRect.height})`;
+      const incoming = [
+        animate(glassShell, [{ transform: originTransform, borderRadius: '180px', opacity: .3 }, { transform: 'translate(0,0) scale(1)', borderRadius: window.innerWidth <= 700 ? '24px' : '30px', opacity: 1 }], { duration: 460, easing: 'cubic-bezier(.22,.8,.24,1)' }),
+        animate(panelContent, [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 260, delay: 150 }),
+        animate(fusion, [{ opacity: 1 }, { opacity: 0 }], { duration: 180 })
+      ];
+      await finish(incoming);
+      fusion.remove();
+      clearAnimations(outgoing);
+      clearAnimations(incoming);
+    } else {
+      setRsvpLayout(true);
+    }
+    heroActions.inert = false;
+    rsvpState = 'open';
+    if (closeAfterOpening) closeRsvp();
+    else focusForm();
+  }
+
+  async function closeRsvp() {
+    if (rsvpState === 'opening') { closeAfterOpening = true; return; }
+    if (rsvpState !== 'open') return;
+    rsvpState = 'closing';
+    const panelRect = rsvpPanel.getBoundingClientRect();
+    const origin = center(panelRect);
+    const clone = motionOff() ? null : glassShell.cloneNode(true);
+    if (clone) {
+      clone.classList.add('glass-return');
+      Object.assign(clone.style, { left: `${panelRect.left}px`, top: `${panelRect.top}px`, width: `${panelRect.width}px`, height: `${panelRect.height}px` });
+      const fade = animate(panelContent, [{ opacity: 1 }, { opacity: 0, transform: 'translateY(4px)' }], { duration: 80 });
+      await finish([fade]);
+      clearAnimations([fade]);
+      document.body.append(clone);
+    }
+    setRsvpLayout(false);
+    if (clone) {
+      const target = center(heroActions.getBoundingClientRect());
+      const returning = [
+        animate(clone, [
+          { transform: 'translate(0,0) scale(1)', opacity: 1 },
+          { transform: `translate(${target.x - origin.x}px,${target.y - origin.y}px) scale(${245 / panelRect.width},${56 / panelRect.height})`, opacity: 0, borderRadius: '180px' }
+        ], { duration: 340 }),
+        animate(heroIntro, [{ opacity: 0, transform: 'translateY(-8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 260, delay: 80 }),
+        animate(heroActions, [{ opacity: 0 }, { opacity: 1 }], { duration: 220, delay: 200 })
+      ];
+      actionButtons.forEach(button => {
+        const destination = center(button.getBoundingClientRect());
+        returning.push(animate(button, [{ transform: `translate(${target.x - destination.x}px,${target.y - destination.y}px) scale(.96)`, opacity: 0 }, { transform: 'translate(0,0) scale(1)', opacity: 1 }], { duration: 220, delay: 200 }));
+      });
+      await finish(returning);
+      clone.remove();
+      clearAnimations(returning);
+    }
+    rsvpState = 'closed';
+    if (returnTo && returnTo.offsetParent !== null && !returnTo.closest('[inert]')) returnTo.focus({ preventScroll: true });
+    else heroActions.querySelector('[data-open-rsvp]').focus({ preventScroll: true });
+  }
+
+  rsvpTriggers.forEach(trigger => trigger.addEventListener('click', () => openRsvp(trigger)));
+  document.querySelectorAll('[data-close-rsvp]').forEach(button => button.addEventListener('click', closeRsvp));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && (rsvpState === 'open' || rsvpState === 'opening')) { event.preventDefault(); closeRsvp(); }
   });
 
-  /* ---------- 8. Entrada del header al cargar ---------- */
-  document.body.classList.add("is-ready");
+  const companions = document.querySelector('.companion-details');
+  const countInput = document.querySelector('#rsvp-count');
+  const minusButton = document.querySelector('[data-count-step="-1"]');
+  const accompanied = () => rsvpForm.elements.accompanied.value === 'yes';
+  function updateParty() {
+    const yes = accompanied();
+    companions.classList.toggle('is-expanded', yes);
+    companions.setAttribute('aria-hidden', String(!yes));
+    companions.inert = !yes;
+    companions.querySelectorAll('input,button').forEach(element => { element.disabled = !yes; });
+    countInput.required = yes;
+    minusButton.disabled = !yes || Number(countInput.value) <= 1;
+    if (!yes) { countInput.removeAttribute('aria-invalid'); document.querySelector('#count-error').hidden = true; }
+  }
+  rsvpForm.querySelectorAll('[name="accompanied"]').forEach(input => input.addEventListener('change', updateParty));
+  document.querySelectorAll('[data-count-step]').forEach(button => button.addEventListener('click', () => {
+    const current = Number(countInput.value);
+    countInput.value = Math.max(1, (Number.isSafeInteger(current) ? current : 1) + Number(button.dataset.countStep));
+    validateField(countInput);
+    updateParty();
+  }));
+  countInput.addEventListener('input', () => { minusButton.disabled = !accompanied() || Number(countInput.value) <= 1; });
+
+  const fields = ['name', 'email', 'phone', 'count'].map(key => document.querySelector(`#rsvp-${key}`));
+  function validateField(field) {
+    if (field.disabled) return true;
+    let error = '';
+    const value = field.value.trim();
+    if (field.id === 'rsvp-name' && value.length < 2) error = 'Escribe tu nombre completo.';
+    if (field.id === 'rsvp-email' && (!value || field.validity.typeMismatch)) error = 'Escribe un correo electrónico válido.';
+    if (field.id === 'rsvp-phone' && (!/^[\d\s().-]+$/.test(value) || !/^(?:09\d{8}|0[2-7]\d{7})$/.test(value.replace(/\D/g, '')))) error = 'Escribe un número local válido, como 099 123 4567.';
+    if (field.id === 'rsvp-count' && (!Number.isSafeInteger(Number(value)) || Number(value) < 1)) error = 'Indica al menos un acompañante.';
+    const message = document.getElementById(field.getAttribute('aria-describedby'));
+    message.textContent = error;
+    message.hidden = !error;
+    if (error) field.setAttribute('aria-invalid', 'true');
+    else field.removeAttribute('aria-invalid');
+    return !error;
+  }
+  fields.forEach(field => {
+    field.addEventListener('blur', () => { if (field.value || field.getAttribute('aria-invalid')) validateField(field); });
+    field.addEventListener('input', () => { if (field.getAttribute('aria-invalid')) validateField(field); });
+  });
+
+  async function switchRsvpView(review) {
+    if (viewChanging || rsvpState !== 'open') return;
+    viewChanging = true;
+    const from = review ? editView : reviewView;
+    const to = review ? reviewView : editView;
+    if (!motionOff()) {
+      const out = animate(from, [{ opacity: 1 }, { opacity: 0, transform: 'translateY(-4px)' }], { duration: 100 });
+      await finish([out]);
+      clearAnimations([out]);
+    }
+    from.hidden = true;
+    to.hidden = false;
+    rsvpPanel.setAttribute('aria-labelledby', review ? 'review-title' : 'rsvp-title');
+    if (!motionOff()) {
+      const incoming = animate(to, [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 220 });
+      await finish([incoming]);
+      clearAnimations([incoming]);
+    }
+    viewChanging = false;
+    if (rsvpState === 'open') (review ? document.querySelector('#review-title') : document.querySelector('#rsvp-name')).focus({ preventScroll: true });
+  }
+  rsvpForm.addEventListener('submit', event => {
+    event.preventDefault();
+    if (rsvpState !== 'open') return;
+    fields.forEach(field => { if (field.type !== 'number') field.value = field.value.trim(); });
+    const invalidFields = fields.filter(field => !validateField(field));
+    if (invalidFields.length) { invalidFields[0].focus(); return; }
+    const data = {
+      name: rsvpForm.elements.name.value,
+      email: rsvpForm.elements.email.value,
+      phone: rsvpForm.elements.phone.value,
+      party: accompanied() ? `Tú + ${countInput.value} ${Number(countInput.value) === 1 ? 'acompañante' : 'acompañantes'}` : 'Solo tú'
+    };
+    Object.entries(data).forEach(([key, value]) => { document.querySelector(`[data-review="${key}"]`).textContent = value; });
+    // Preview only: no endpoint, network request, persistent storage, or confirmation claim.
+    switchRsvpView(true);
+  });
+  document.querySelector('[data-edit-rsvp]').addEventListener('click', () => switchRsvpView(false));
+  rsvpForm.querySelector('[type="submit"]').disabled = false;
+  updateParty();
 })();

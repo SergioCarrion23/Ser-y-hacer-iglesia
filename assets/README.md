@@ -1,39 +1,23 @@
-# assets
+# Archivos del hero
 
-Coloca aquí los archivos multimedia del hero.
+- `fabric-loop.mp4`: animación de tela creada con Kling 2.5 Turbo a través de
+  ElevenLabs. Usa como referencia el fotograma de 8,5 segundos del video
+  proporcionado por el organizador, con el mismo fotograma de entrada y salida.
+  El archivo publicado está optimizado para la web, sin pista de audio.
+- `fabric-poster.jpg`: imagen de respaldo y portada del video.
+- `tree-emblem.png`: emblema original de Árbol de Vida, optimizado para el header
+  y el favicon.
 
-## Video de fondo
+El video se reproduce con `autoplay`, `muted`, `loop` y `playsinline`. Se pausa
+cuando la pestaña está oculta o cuando el visitante prefiere reducir el movimiento.
+Los archivos se sirven desde este repositorio, sin depender de enlaces temporales
+de la plataforma de generación.
 
-1. Copia tu video en esta carpeta con el nombre exacto:
+Para revisar el sitio localmente, ejecuta desde la raíz del repositorio:
 
-   ```
-   assets/hero.mp4
-   ```
-
-2. Opcional: agrega una imagen de portada que se muestra antes de que el video
-   cargue:
-
-   ```
-   assets/hero-poster.jpg
-   ```
-
-## Recomendaciones para el video
-
-- **Resolución:** 1920×1080 es suficiente (el velo cubre el fondo, no necesitas 4K).
-- **Duración:** 8–20 segundos, sin cortes bruscos para que el loop se sienta natural.
-- **Peso:** menos de 8 MB idealmente. Comprime con HandBrake (H.264, CRF 26–30).
-- **Sin audio:** el video se reproduce en silencio automáticamente.
-- **Formato alternativo:** si usas `.webm`, cambia el `src` en `index.html`.
-
-## Cómo lo usa la página
-
-El `<video>` tiene los atributos:
-
-```html
-<video class="hero__bg" autoplay muted loop playsinline preload="auto">
+```sh
+python3 -m http.server 8080 --bind 127.0.0.1
 ```
 
-- `autoplay` + `muted` → arranca solo, sin sonido (requisito de los navegadores)
-- `loop` → repite infinitamente
-- `playsinline` → no abre pantalla completa en móviles
-- El velo verde (`.hero__scrim`) garantiza que el texto blanco siempre sea legible
+El formulario valida los datos y muestra una revisión. Todavía no tiene un
+servicio de envío o almacenamiento de inscripciones conectado.

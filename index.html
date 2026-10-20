@@ -11,10 +11,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
 
+  <meta name="theme-color" content="#424a3d" />
+  <link rel="icon" type="image/png" href="assets/tree-emblem.png" />
+
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <a class="skip-link" href="#inicio">Saltar al contenido</a>
 
   <!-- ============================= HEADER ============================= -->
   <header class="site-header" id="header">
@@ -26,7 +30,7 @@
       <a href="#inicio" class="brand" aria-label="Árbol De Vida — Inicio">
         <span class="brand__mark" aria-hidden="true">
           <img
-            src="https://res.cloudinary.com/dlsw7vg31/image/upload/v1792469479/copy_of_embossed_dark_green_tree_emblem_h1lb12.png"
+            src="assets/tree-emblem.png"
             alt=""
             width="64"
             height="64"
@@ -41,8 +45,8 @@
       <!-- Navigation -->
       <nav class="nav" id="nav" aria-label="Principal">
         <ul class="nav__list">
-          <li class="nav__item"><a class="nav__link" href="#evento"><span>Evento</span></a></li>
-          <li class="nav__item"><a class="nav__link" href="#ponentes"><span>Ponente</span></a></li>
+          <li class="nav__item"><a class="nav__link" href="#evento"><span>El evento</span></a></li>
+          <li class="nav__item"><a class="nav__link" href="#ponentes"><span>Ponentes</span></a></li>
           <li class="nav__item"><a class="nav__link" href="#programa"><span>Programa</span></a></li>
           <li class="nav__item"><a class="nav__link" href="#ubicacion"><span>Ubicación</span></a></li>
           <li class="nav__item"><a class="nav__link" href="#faq"><span>FAQ</span></a></li>
@@ -52,9 +56,15 @@
 
       <!-- Actions -->
       <div class="header__actions">
-        <a href="#registro" class="neu-btn neu-btn--sm" id="openFormHeader">
-          <span class="neu-btn__label">Confirmar asistencia</span>
-        </a>
+        <button type="button" data-open-rsvp aria-controls="registro" aria-expanded="false" class="wave-btn wave-btn--sm">
+          <span class="wave-btn__label">Confirmar asistencia</span>
+          <span class="wave-btn__icon" aria-hidden="true">
+            <svg class="wave-btn__arrow" viewBox="0 0 15 14" fill="none">
+              <path d="M2 7h10M7.5 3 11.5 7l-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="wave-btn__wave" aria-hidden="true"></span>
+        </button>
 
         <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
           <span></span><span></span>
@@ -65,181 +75,142 @@
     <!-- Mobile menu -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
       <nav class="mobile-menu__nav" aria-label="Menú móvil">
-        <a href="#evento" class="mobile-menu__link"><span>01</span> Evento</a>
-        <a href="#ponentes" class="mobile-menu__link"><span>02</span> Ponente</a>
+        <a href="#evento" class="mobile-menu__link"><span>01</span> El evento</a>
+        <a href="#ponentes" class="mobile-menu__link"><span>02</span> Ponentes</a>
         <a href="#programa" class="mobile-menu__link"><span>03</span> Programa</a>
         <a href="#ubicacion" class="mobile-menu__link"><span>04</span> Ubicación</a>
         <a href="#faq" class="mobile-menu__link"><span>05</span> FAQ</a>
       </nav>
-      <a href="#registro" class="neu-btn neu-btn--full mobile-menu__cta">
-        <span class="neu-btn__label">Confirmar asistencia</span>
-      </a>
+      <button type="button" data-open-rsvp aria-controls="registro" aria-expanded="false" class="wave-btn btn--full mobile-menu__cta">
+        <span class="wave-btn__label">Confirmar asistencia</span>
+        <span class="wave-btn__wave" aria-hidden="true"></span>
+      </button>
       <p class="mobile-menu__date">13 &ndash; 15 de noviembre · Cupos limitados</p>
     </div>
 
   </header>
 
-  <!-- ============================= HERO (stub) ============================= -->
+  <!-- ============================= HERO ============================= -->
   <main id="inicio">
-    <section class="hero">
-      <!-- Capa 1: video con blur, enmascarado solo hacia la izquierda -->
-      <div class="hero__bg-blur" aria-hidden="true">
-        <video
-          autoplay
-          muted
-          loop
-          playsinline
-          preload="auto"
-          src="https://res.cloudinary.com/dlsw7vg31/video/upload/v1792469614/Crear_video_corporativo_con_logo_20261019231043_k2koop.mp4"
-        ></video>
-      </div>
-
-      <!-- Capa 2: video nítido, desplazado a la derecha -->
+    <section class="hero" aria-labelledby="hero-title">
+      <!-- Animación de tela de 10 segundos, optimizada para repetirse sin cortes. -->
       <video
         class="hero__bg"
+        aria-hidden="true"
+        tabindex="-1"
         autoplay
         muted
         loop
         playsinline
-        preload="auto"
-        src="https://res.cloudinary.com/dlsw7vg31/video/upload/v1792469614/Crear_video_corporativo_con_logo_20261019231043_k2koop.mp4"
+        preload="metadata"
+        poster="assets/fabric-poster.jpg"
+        src="assets/fabric-loop.mp4"
       ></video>
 
       <div class="hero__scrim" aria-hidden="true"></div>
 
       <div class="container hero__inner">
         <div class="hero__content">
+          <div class="hero__intro">
           <p class="hero__eyebrow">
             <span class="hero__dot"></span>
-            Evento · 13 &ndash; 15 de noviembre
+            Encuentro · 13 &ndash; 15 de noviembre
           </p>
-          <h1 class="hero__title">Ser y Hacer <em>Iglesia</em></h1>
+          <h1 class="hero__title" id="hero-title"><span>Ser y Hacer</span><em>Iglesia</em></h1>
           <p class="hero__lead">Tres días para volver a lo esencial: la presencia, la palabra y la comunidad.</p>
-          <div class="hero__actions" id="heroActions">
+          </div>
+          <div class="rsvp-stage">
+          <div class="hero__actions">
           <!-- Wave Reveal Button -->
-          <a href="#registro" class="neu-btn" id="openForm" aria-controls="registroForm" aria-expanded="false">
-            <span class="neu-btn__label">Confirmar asistencia</span>
-          </a>
+          <button type="button" data-open-rsvp aria-controls="registro" aria-expanded="false" class="wave-btn">
+            <span class="wave-btn__label">Confirmar asistencia</span>
+            <span class="wave-btn__icon" aria-hidden="true">
+              <!-- Flecha (se desliza a la izquierda en hover) -->
+              <svg class="wave-btn__arrow" viewBox="0 0 15 14" fill="none">
+                <path d="M2 7h10M7.5 3 11.5 7l-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="wave-btn__wave" aria-hidden="true"></span>
+          </button>
 
-          <a href="#ponentes" class="neu-btn">
-            <span class="neu-btn__label">Conocer al ponente</span>
+          <a href="#ponentes" class="wave-btn wave-btn--outline">
+            <span class="wave-btn__label">Conocer al conferencista</span>
+            <span class="wave-btn__icon" aria-hidden="true">
+              <svg class="wave-btn__arrow" viewBox="0 0 15 14" fill="none">
+                <path d="M2 7h10M7.5 3 11.5 7l-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span class="wave-btn__wave" aria-hidden="true"></span>
           </a>
           </div>
-
-          <!-- ====== FORMULARIO LIQUID GLASS (oculto hasta confirmar) ====== -->
-          <form
-            class="glass-form"
-            id="registroForm"
-            data-open="false"
-            novalidate
-            aria-hidden="true"
-          >
-            <!-- Brillo que sigue al cursor -->
-            <span class="glass-form__glow" aria-hidden="true"></span>
-
-            <div class="glass-form__head">
-              <p class="glass-form__eyebrow">
-                <span class="glass-form__dot">
-                  <span class="glass-form__dot-pulse"></span>
-                </span>
-                Cupos limitados
-              </p>
-              <h2 class="glass-form__title">Confirma tu asistencia</h2>
-              <p class="glass-form__sub">Completa tus datos y guarda tu lugar en el encuentro.</p>
-            </div>
-
-            <div class="glass-form__grid">
-              <label class="field">
-                <span class="field__label">Nombre completo</span>
-                <input
-                  class="field__input"
-                  type="text"
-                  name="nombre"
-                  autocomplete="name"
-                  placeholder="Tu nombre"
-                  required
-                />
-              </label>
-
-              <label class="field">
-                <span class="field__label">Correo electrónico</span>
-                <input
-                  class="field__input"
-                  type="email"
-                  name="email"
-                  autocomplete="email"
-                  placeholder="tucorreo@ejemplo.com"
-                  required
-                />
-              </label>
-
-              <label class="field">
-                <span class="field__label">Teléfono</span>
-                <input
-                  class="field__input"
-                  type="tel"
-                  name="telefono"
-                  autocomplete="tel"
-                  placeholder="+57 300 000 0000"
-                  required
-                />
-              </label>
-
-              <div class="field">
-                <span class="field__label">¿Cuántas personas te acompañan?</span>
-                <div class="stepper">
-                  <button
-                    type="button"
-                    class="stepper__btn"
-                    data-step="-1"
-                    aria-label="Quitar un acompañante"
-                  >
-                    <svg viewBox="0 0 12 12" aria-hidden="true">
-                      <path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                    </svg>
-                  </button>
-                  <input
-                    class="field__input stepper__input"
-                    type="number"
-                    name="acompanantes"
-                    inputmode="numeric"
-                    min="0"
-                    max="20"
-                    step="1"
-                    value="0"
-                    aria-label="Número de acompañantes"
-                    required
-                  />
-                  <button
-                    type="button"
-                    class="stepper__btn"
-                    data-step="1"
-                    aria-label="Añadir un acompañante"
-                  >
-                    <svg viewBox="0 0 12 12" aria-hidden="true">
-                      <path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                    </svg>
-                  </button>
-                </div>
+          <div class="rsvp-panel" id="registro" aria-labelledby="rsvp-title" hidden>
+            <div class="glass-shell" aria-hidden="true"></div>
+            <div class="rsvp-panel__content">
+              <div class="rsvp-topline">
+                <span class="rsvp-kicker"><span class="rsvp-spark" aria-hidden="true">✧</span> SER Y HACER IGLESIA</span>
+                <button type="button" class="rsvp-close" data-close-rsvp aria-label="Cerrar formulario y volver al inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17" /></svg></button>
+              </div>
+              <div class="rsvp-edit">
+                <h2 id="rsvp-title" tabindex="-1">Nos encantará <em>verte.</em></h2>
+                <p class="rsvp-subtitle">13–15 de noviembre · Árbol de Vida</p>
+                <form id="rsvp-form" novalidate>
+                  <div class="rsvp-field">
+                    <label for="rsvp-name">Nombre completo</label>
+                    <input id="rsvp-name" name="name" type="text" autocomplete="name" placeholder="¿Cómo te llamas?" maxlength="100" required aria-describedby="name-error" />
+                    <p class="field-error" id="name-error" hidden></p>
+                  </div>
+                  <div class="rsvp-contact-row">
+                    <div class="rsvp-field">
+                      <label for="rsvp-email">Correo electrónico</label>
+                      <input id="rsvp-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com" maxlength="254" required aria-describedby="email-error" />
+                      <p class="field-error" id="email-error" hidden></p>
+                    </div>
+                    <div class="rsvp-field">
+                      <label for="rsvp-phone">Número de teléfono</label>
+                      <input id="rsvp-phone" name="phone" type="tel" autocomplete="tel-national" inputmode="tel" placeholder="Ej. 099 123 4567" maxlength="20" required aria-describedby="phone-error" />
+                      <p class="field-error" id="phone-error" hidden></p>
+                    </div>
+                  </div>
+                  <fieldset class="rsvp-party">
+                    <legend>¿Alguien te acompañará?</legend>
+                    <div class="party-options">
+                      <label><input type="radio" name="accompanied" value="no" checked /><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3" /><path d="M6 21v-3a6 6 0 0 1 12 0v3" /></svg>Voy solo/a</span></label>
+                      <label><input type="radio" name="accompanied" value="yes" /><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7" r="3" /><path d="M3 21v-3a6 6 0 0 1 12 0v3m2-17a3 3 0 0 1 0 6m1 4a5 5 0 0 1 3 5v2" /></svg>Voy acompañado/a</span></label>
+                    </div>
+                  </fieldset>
+                  <div class="companion-details" aria-hidden="true" inert>
+                    <div class="companion-details__inner">
+                      <div class="companion-count-row">
+                        <div><label for="rsvp-count">¿Cuántas personas más?</label><p>Sin contarte a ti.</p></div>
+                        <div class="party-stepper">
+                          <button type="button" data-count-step="-1" aria-label="Quitar un acompañante" disabled>−</button>
+                          <input id="rsvp-count" name="companionCount" type="number" min="1" step="1" value="1" inputmode="numeric" aria-describedby="count-error" disabled />
+                          <button type="button" data-count-step="1" aria-label="Añadir un acompañante" disabled>+</button>
+                        </div>
+                      </div>
+                      <p class="field-error" id="count-error" hidden></p>
+                    </div>
+                  </div>
+                  <button class="rsvp-submit" type="submit" disabled><span>Revisar mi asistencia</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" /></svg></button>
+                </form>
+              </div>
+              <div class="rsvp-review" hidden aria-labelledby="review-title">
+                <h2 id="review-title" tabindex="-1">Todo en <em>su lugar.</em></h2>
+                <p class="rsvp-subtitle">Revisa los datos de tu invitación.</p>
+                <dl class="review-details"><div><dt>Nombre</dt><dd data-review="name"></dd></div><div><dt>Correo</dt><dd data-review="email"></dd></div><div><dt>Teléfono</dt><dd data-review="phone"></dd></div><div><dt>Asistencia</dt><dd data-review="party"></dd></div></dl>
+                <div class="preview-notice"><span>VISTA PREVIA</span><p>El envío aún no está habilitado.<br />Tu asistencia todavía no se ha registrado.</p></div>
+                <button class="rsvp-submit" type="button" data-edit-rsvp><span>Editar mis datos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m6-6-6 6 6 6" /></svg></button>
+                <button class="rsvp-return" type="button" data-close-rsvp>Volver al inicio</button>
               </div>
             </div>
-
-            <div class="glass-form__foot">
-              <button type="submit" class="neu-btn neu-btn--full">
-                <span class="neu-btn__label">Enviar confirmación</span>
-              </button>
-
-              <button type="button" class="glass-form__cancel" id="closeForm">
-                Volver
-              </button>
-            </div>
-          </form>
-
+          </div>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
+  <svg class="liquid-defs" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs><filter id="liquid-fusion" x="-50%" y="-100%" width="200%" height="300%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="fusion" /><feComposite in="SourceGraphic" in2="fusion" operator="atop" /></filter></defs></svg>
   <script src="script.js"></script>
 </body>
 </html>
