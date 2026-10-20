@@ -10,6 +10,12 @@
 - `church-arbol-de-vida.png` y `church-shalom.png`: logos proporcionados por el
   organizador para presentar a ambas iglesias en la sección del encuentro.
   Se conservan los PNG transparentes originales.
+- `event-friday.jpg`: foto original del grupo de jóvenes. El encuadre adaptable
+  prioriza al grupo y reduce el espacio vacío superior, sin retocar las personas.
+- `event-saturday.jpg`: fotografía de la bandera del Ecuador.
+- `event-sunday.jpg`: fotografía de la congregación reunida.
+  Las tres fotos fueron proporcionadas por el organizador y se exportan en JPEG
+  para reducir el peso de descarga.
 
 El video se reproduce con `autoplay`, `muted`, `loop` y `playsinline`. Se pausa
 cuando la pestaña está oculta. El video y las transiciones del formulario están
@@ -32,5 +38,6 @@ La sección de los tres días adapta el patrón visual del componente
 Feature Showcase Native compartido por el organizador. Está implementada en
 HTML, CSS y JavaScript propios, sin cargar el runtime de Framer. En escritorio
 la imagen queda fija y cambia al recorrer los días; en móvil cada imagen
-acompaña su contenido y se mantiene una navegación compacta. Las fotografías
-son espacios provisionales, identificados como «Fotografía por confirmar».
+acompaña su contenido y se mantiene una navegación compacta. En escritorio,
+las leyendas se colocan debajo de las fotografías para mantener visibles a
+las personas y la bandera.
