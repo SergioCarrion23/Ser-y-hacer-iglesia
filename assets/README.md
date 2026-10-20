@@ -12,10 +12,18 @@
   Se conservan los PNG transparentes originales.
 - `event-friday.jpg`: foto original del grupo de jóvenes. El encuadre adaptable
   prioriza al grupo y reduce el espacio vacío superior, sin retocar las personas.
+  Un filtro CSS `brightness(1.12)` aclara su presentación en escritorio y móvil;
+  el archivo original y los rasgos de las personas se conservan.
 - `event-saturday.jpg`: fotografía de la bandera del Ecuador.
 - `event-sunday.jpg`: fotografía de la congregación reunida.
   Las tres fotos fueron proporcionadas por el organizador y se exportan en JPEG
   para reducir el peso de descarga.
+- `pastor-roy-soto.jpg`: retrato proporcionado para la presentación del pastor,
+  reducido a 1200 × 1800 píxeles para la web.
+- `pastor-motion.js`: componente de movimiento compilado con Framer Motion.
+  Incluye aparición al entrar en pantalla, movimiento con el desplazamiento
+  e inclinación sutil con el cursor. El contenido sigue visible sin JavaScript.
+  Las licencias se conservan en `motion-licenses.txt`.
 
 El video se reproduce con `autoplay`, `muted`, `loop` y `playsinline`. Se pausa
 cuando la pestaña está oculta. El video y las transiciones del formulario están
@@ -41,3 +49,17 @@ la imagen queda fija y cambia al recorrer los días; en móvil cada imagen
 acompaña su contenido y se mantiene una navegación compacta. En escritorio,
 las leyendas se colocan debajo de las fotografías para mantener visibles a
 las personas y la bandera.
+
+La presentación de Roy Soto usa un retrato central y texto centrado. El patrón
+de interacción toma como referencia las tarjetas inclinables de Framer:
+https://www.framer.com/marketplace/components/tiltcard/
+Su implementación es propia y utiliza la API DOM de Framer Motion:
+https://motion.dev/docs/inview y https://motion.dev/docs/scroll
+
+Para modificar las animaciones, edita `pastor-motion.js` en la raíz, ejecuta
+`npm ci` y `npm run build`, y publica también los archivos compilados de `assets/`.
+GitHub Pages sirve el resultado ya compilado; no necesita ejecutar Node.
+
+Los botones y la etiqueta de fecha del hero usan superficies de vidrio
+translúcido. El desenfoque permanece fijo y el hover anima el reflejo y una
+elevación pequeña, manteniendo el efecto de fusión del formulario.

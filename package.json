@@ -1,0 +1,11 @@
+{
+  "name": "ser-y-hacer-iglesia",
+  "private": true,
+  "scripts": {
+    "build": "node build-motion.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "framer-motion": "14.4.0"
+  }
+}

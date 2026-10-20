@@ -94,7 +94,7 @@ body.menu-open { overflow: hidden; }
 .event-showcase__images > .event-visual.is-active { opacity: 1; transform: none; }
 .event-visual::after { content: ""; position: absolute; inset: 0 0 104px; background: linear-gradient(180deg,#0d191866,transparent 30%); pointer-events: none; }
 .event-visual__photo { position: absolute; inset: 0; width: 100%; height: calc(100% - 104px); object-fit: cover; }
-.event-visual--friday .event-visual__photo { object-position: center bottom; }
+.event-visual--friday .event-visual__photo { object-position: center bottom; filter: brightness(1.12); }
 .event-visual--sunday .event-visual__photo { object-position: center 43%; }
 .event-visual__overline { position: absolute; z-index: 1; top: 26px; left: 28px; right: 28px; display: flex; justify-content: space-between; gap: 10px; color: #fff; text-shadow: 0 1px 8px #10201580; font-size: 8px; font-weight: 500; letter-spacing: 1.4px; }
 .event-visual__overline > span { opacity: .85; letter-spacing: 1px; }
@@ -178,6 +178,68 @@ body.menu-open { overflow: hidden; }
   .event-story__closing p { order: -1; width: 100%; font-size: 17px; }
   .event-story__closing > span { font-size: 7px; }
 }
+/* Centered speaker feature; Framer Motion progressively enhances the portrait. */
+.pastor-feature { position: relative; overflow: clip; background: #eaf0e5; padding: 90px 0 30px; scroll-margin-top: 0; }
+.pastor-feature__inner { max-width: 1180px; text-align: center; }
+.pastor-heading .section-eyebrow { justify-content: center; margin-bottom: 27px; }
+.pastor-heading__role { display: block; font: 400 17px/1.5 var(--font-display); color: #6b795f; margin-bottom: 4px; }
+.pastor-heading__name { display: block; font: 400 clamp(78px,12vw,156px)/1 var(--font-display); color: #35472d; letter-spacing: -.065em; }
+.pastor-heading__name em { color: #78886a; font-weight: 400; }
+.pastor-stage { position: relative; width: min(100%,1000px); margin: 37px auto 0; padding: 14px 0 25px; }
+.pastor-stage__orbit { position: absolute; width: 95%; height: 63%; top: 16%; left: 2.5%; border: 1px solid #526d3b20; border-radius: 50%; transform: rotate(-13deg); pointer-events: none; }
+.pastor-stage__orbit::before { content: ""; position: absolute; inset: 32px -18px; border: 1px solid #526d3b12; border-radius: inherit; transform: rotate(24deg); }
+.pastor-stage__note { position: absolute; top: 46%; color: #6c7e5c; font: 400 22px/1.4 var(--font-display); letter-spacing: -.6px; text-align: left; }
+.pastor-stage__note em { color: #8c9b7c; }
+.pastor-stage__note--left { left: 5%; transform: rotate(-6deg); }
+.pastor-stage__note--right { right: 4%; top: 33%; transform: rotate(5deg); }
+.pastor-portrait { position: relative; width: min(40%,380px); margin-inline: auto; perspective: 1200px; }
+.pastor-portrait__float { perspective: 1200px; }
+.pastor-card { position: relative; aspect-ratio: 3 / 4; border-radius: 22px; background: #2e382c; overflow: hidden; box-shadow: 0 24px 54px -22px #2d412f60,0 3px 9px #2d412f12; transform-style: preserve-3d; }
+.pastor-card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
+.pastor-card::after { content: ""; position: absolute; inset: 65% 0 0; background: linear-gradient(transparent,#101d1b9c); pointer-events: none; }
+.pastor-card figcaption { position: absolute; z-index: 1; bottom: 20px; left: 22px; right: 22px; display: flex; align-items: center; gap: 7px; text-align: left; color: #fff; font-size: 7px; line-height: 1.6; letter-spacing: 1px; }
+.pastor-card figcaption > span:last-child { margin-left: auto; opacity: .8; font-size: 7px; letter-spacing: .6px; }
+.pastor-card__dot { width: 5px; height: 5px; flex-shrink: 0; border-radius: 50%; background: #dce9c5; }
+.pastor-card__shine { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(125deg,#ffffff13,transparent 45%,#ffffff05); border: 1px solid #fff5; border-radius: inherit; }
+.pastor-invitation { position: relative; max-width: 555px; margin: 23px auto 0; }
+.pastor-invitation__date { display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px; border: 1px solid #fff9; border-radius: 999px; background: linear-gradient(135deg,#ffffff66,#ffffff20); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: inset 0 1px 0 #ffffffe0,0 3px 12px #3d573108; font-size: 8px; letter-spacing: 1px; color: #637351; }
+.pastor-invitation__date > span { width: 4px; height: 4px; border-radius: 50%; background: #7b915d; }
+.pastor-invitation h3 { font: 400 37px/1.15 var(--font-display); letter-spacing: -1.4px; margin-top: 22px; }
+.pastor-invitation h3 em { font-weight: 400; color: #728261; }
+.pastor-invitation__copy { max-width: 455px; margin: 19px auto 0; color: #6e7c61; font-size: 13px; line-height: 1.9; }
+.pastor-invitation__cta { display: inline-flex; align-items: center; justify-content: center; gap: 32px; min-height: 50px; padding: 14px 24px; background: #3f5234; color: #f4f6ee; border-radius: 999px; margin-top: 27px; font-size: 11px; transition: background .25s,box-shadow .25s; }
+.pastor-invitation__cta > span { font-size: 18px; line-height: 1; transition: transform .3s var(--ease); }
+.pastor-invitation__cta:hover { background: #2f4225; box-shadow: 0 6px 20px #3450271a; }
+.pastor-invitation__cta:hover > span { transform: translate(2px,-2px); }
+.pastor-invitation__host { font-size: 9px; color: #7a886e; margin-top: 15px; }
+.pastor-feature__footer { border-top: 1px solid #536a3c22; margin-top: 66px; padding-top: 25px; display: flex; justify-content: space-between; gap: 16px; color: #819073; font-size: 7px; letter-spacing: 1.2px; }
+@media (max-width: 900px) {
+  .pastor-feature { padding-top: 65px; }
+  .pastor-stage { margin-top: 28px; }
+  .pastor-portrait { width: 45%; }
+  .pastor-stage__note { font-size: 18px; }
+  .pastor-stage__note--left { left: 0; }
+  .pastor-stage__note--right { right: 0; }
+}
+@media (max-width: 600px) {
+  .pastor-feature { padding-block: 48px 24px; }
+  .pastor-heading .section-eyebrow { font-size: 7px; letter-spacing: 1.5px; margin-bottom: 22px; }
+  .pastor-heading__role { font-size: 14px; }
+  .pastor-heading__name { font-size: clamp(66px,19.5vw,114px); }
+  .pastor-stage { margin-top: 19px; padding-block: 15px 23px; }
+  .pastor-portrait { width: 80%; max-width: 350px; }
+  .pastor-stage__orbit { width: 150%; left: -25%; height: 72%; top: 13%; }
+  .pastor-stage__note { display: none; }
+  .pastor-card { border-radius: 17px; }
+  .pastor-card figcaption { bottom: 16px; left: 17px; right: 17px; font-size: 6px; letter-spacing: .7px; }
+  .pastor-card figcaption > span:last-child { font-size: 6px; }
+  .pastor-invitation { margin-top: 17px; }
+  .pastor-invitation__date { font-size: 7px; letter-spacing: .8px; }
+  .pastor-invitation h3 { font-size: clamp(27px,7.7vw,38px); letter-spacing: -1.2px; margin-top: 20px; }
+  .pastor-invitation__copy { font-size: 12px; max-width: 335px; }
+  .pastor-invitation__cta { margin-top: 23px; }
+  .pastor-feature__footer { margin-top: 43px; font-size: 6px; letter-spacing: .7px; }
+}
 .hero { position: relative; isolation: isolate; min-height: calc(100svh - var(--header-h) - 1px); overflow: hidden; background: #a9afa0; }
 .hero::before { content: ""; position: absolute; inset: 0; z-index: -2; background: url("assets/tree-emblem.png") center / min(40vw,520px) auto no-repeat; opacity: .65; }
 .hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: -2; }
@@ -192,6 +254,16 @@ body.menu-open { overflow: hidden; }
 .hero__title em { font-weight: 400; color: #dce5cd; }
 .hero__lead { max-width: 450px; margin: 25px auto 0; font-size: 16px; line-height: 1.8; color: #ebefdfed; font-weight: 400; }
 .hero__actions { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 35px auto 0; }
+/* Keep the blur still; animate only the light reflection and the slight lift. */
+.hero__actions .wave-btn { color: #fff; background: linear-gradient(135deg,#ffffff30,#edf9dd16); border-color: #f6ffeb66; backdrop-filter: blur(16px) saturate(1.5); -webkit-backdrop-filter: blur(16px) saturate(1.5); box-shadow: inset 0 1px 0 #ffffffb3,inset 0 -1px 0 #ffffff17,0 8px 24px #0a1c1a1f; transition: transform .3s var(--ease),background .3s,border-color .3s,box-shadow .3s; }
+.hero__actions .wave-btn--outline { background: linear-gradient(135deg,#ffffff16,#e5f5d40a); border-color: #f6ffeb45; box-shadow: inset 0 1px 0 #ffffff70,inset 0 -1px 0 #ffffff0c,0 8px 24px #0a1c1a17; }
+.hero__actions .wave-btn__label { text-shadow: 0 1px 5px #10251b30; }
+.hero__actions .wave-btn__wave { width: 52%; height: 280%; aspect-ratio: auto; top: -90%; left: -90%; border-radius: 0; background: linear-gradient(90deg,transparent,#ffffff24,transparent); transform: rotate(22deg); transition: transform .7s var(--ease); }
+.hero__actions .wave-btn:hover { transform: translateY(-3px); background: linear-gradient(135deg,#ffffff40,#edf9dd22); border-color: #f6ffeb99; box-shadow: inset 0 1px 0 #ffffffd9,inset 0 -1px 0 #ffffff24,0 12px 30px #0a1c1a2e; }
+.hero__actions .wave-btn:hover .wave-btn__wave { transform: translateX(420%) rotate(22deg); }
+.hero__actions .wave-btn:active { transform: translateY(-1px) scale(.985); }
+.hero__actions .wave-btn:focus-visible { outline-color: #f2ffdf; }
+.hero__eyebrow { color: #f6faee; background: linear-gradient(120deg,#ffffff1f,#e5f5d40c); border-color: #f6ffeb47; backdrop-filter: blur(13px) saturate(1.4); -webkit-backdrop-filter: blur(13px) saturate(1.4); box-shadow: inset 0 1px 0 #ffffff80,inset 0 -1px 0 #ffffff0d,0 5px 18px #10251b14; text-shadow: 0 1px 5px #10251b25; }
 .hero__eyebrow, .hero__title, .hero__lead, .hero__actions { animation: enter .8s var(--ease) both; }
 .hero__title { animation-delay: .08s; }
 .hero__lead { animation-delay: .15s; }

@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" href="assets/tree-emblem.png" />
 
   <!-- Styles -->
-  <link rel="stylesheet" href="styles.css?v=20261020-fotos" />
+  <link rel="stylesheet" href="styles.css?v=20261020-pastor" />
 </head>
 <body>
   <a class="skip-link" href="#inicio">Saltar al contenido</a>
@@ -45,7 +45,7 @@
       <!-- Navigation -->
       <nav class="nav" id="nav" aria-label="Principal">
         <ul class="nav__list">
-          <li class="nav__item"><a class="nav__link" href="#evento"><span>El evento</span></a></li>
+          <li class="nav__item"><a class="nav__link" href="#evento"><span>Evento</span></a></li>
           <li class="nav__item"><a class="nav__link" href="#ponentes"><span>Ponentes</span></a></li>
           <li class="nav__item"><a class="nav__link" href="#programa"><span>Programa</span></a></li>
           <li class="nav__item"><a class="nav__link" href="#ubicacion"><span>Ubicación</span></a></li>
@@ -75,7 +75,7 @@
     <!-- Mobile menu -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
       <nav class="mobile-menu__nav" aria-label="Menú móvil">
-        <a href="#evento" class="mobile-menu__link"><span>01</span> El evento</a>
+        <a href="#evento" class="mobile-menu__link"><span>01</span> Evento</a>
         <a href="#ponentes" class="mobile-menu__link"><span>02</span> Ponentes</a>
         <a href="#programa" class="mobile-menu__link"><span>03</span> Programa</a>
         <a href="#ubicacion" class="mobile-menu__link"><span>04</span> Ubicación</a>
@@ -291,7 +291,7 @@
               </div>
             </article>
 
-            <article class="event-day" id="dia-domingo" data-event-day="2" aria-labelledby="ponentes">
+            <article class="event-day" id="dia-domingo" data-event-day="2" aria-labelledby="sunday-title">
               <div class="event-day__mobile-visual event-visual event-visual--sunday" aria-hidden="true">
                 <img class="event-visual__photo" src="assets/event-sunday.jpg" width="720" height="960" alt="" loading="lazy" decoding="async" />
                 <span class="event-visual__overline">DOMINGO <span>03 / 03</span></span>
@@ -299,7 +299,7 @@
               <div class="event-day__copy">
                 <p class="event-day__eyebrow"><span>03</span> DOMINGO 15 DE NOVIEMBRE</p>
                 <p class="event-day__audience">Comunidad Cristiana Árbol de Vida</p>
-                <h3 id="ponentes">Una palabra para<br /><em>crecer juntos.</em></h3>
+                <h3 id="sunday-title">Una palabra para<br /><em>crecer juntos.</em></h3>
                 <p class="event-day__description">El pastor <strong>Roy Soto</strong> compartirá la Palabra con nuestra congregación. Un domingo para reunirnos como Comunidad Cristiana Árbol de Vida y recibir su mensaje.</p>
                 <p class="event-day__thought">Nos encontramos en casa. Nos encontramos en Él.</p>
                 <button type="button" class="event-day__cta" data-open-rsvp aria-controls="registro" aria-expanded="false">Nos vemos el domingo <span aria-hidden="true">↗</span></button>
@@ -310,9 +310,43 @@
         <div class="event-story__closing"><span>13 — 15 NOV</span><p>Una misma fe. Muchas formas de hacerla presente.</p><span>SER Y HACER IGLESIA</span></div>
       </div>
     </section>
+
+    <section class="pastor-feature" id="ponentes" aria-labelledby="pastor-name" data-pastor-feature>
+      <div class="container pastor-feature__inner">
+        <header class="pastor-heading" data-pastor-reveal>
+          <p class="section-eyebrow"><span></span> UNA VOZ PARA ESTE ENCUENTRO</p>
+          <h2 id="pastor-name"><span class="pastor-heading__role">Pastor</span><span class="pastor-heading__name">Roy <em>Soto.</em></span></h2>
+        </header>
+
+        <div class="pastor-stage">
+          <div class="pastor-stage__orbit" aria-hidden="true"></div>
+          <p class="pastor-stage__note pastor-stage__note--left" aria-hidden="true">La Palabra<br /><em>nos reúne.</em></p>
+          <p class="pastor-stage__note pastor-stage__note--right" aria-hidden="true">La comunidad<br /><em>nos acerca.</em></p>
+          <div class="pastor-portrait" data-pastor-reveal>
+            <div class="pastor-portrait__float">
+              <figure class="pastor-card">
+                <img src="assets/pastor-roy-soto.jpg" alt="Pastor Roy Soto en el interior de una iglesia" width="1200" height="1800" loading="lazy" decoding="async" />
+                <figcaption><span class="pastor-card__dot"></span> INVITADO ESPECIAL <span>DOMINGO 15 NOV</span></figcaption>
+                <div class="pastor-card__shine" aria-hidden="true"></div>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+        <div class="pastor-invitation" data-pastor-reveal>
+          <p class="pastor-invitation__date"><span></span> DOMINGO 15 DE NOVIEMBRE</p>
+          <h3>Un momento para escuchar.<br /><em>Una palabra para vivir.</em></h3>
+          <p class="pastor-invitation__copy">El pastor Roy Soto nos acompañará para compartir la Palabra con la Comunidad Cristiana Árbol de Vida. Una invitación a reunirnos, fortalecer nuestra fe y crecer juntos.</p>
+          <button type="button" class="pastor-invitation__cta" data-open-rsvp aria-controls="registro" aria-expanded="false">Quiero acompañarlos <span aria-hidden="true">↗</span></button>
+          <p class="pastor-invitation__host">Nos encontramos en Árbol de Vida.</p>
+        </div>
+        <div class="pastor-feature__footer"><span>SER Y HACER IGLESIA</span><span>UNA MISMA FE. UN MISMO PROPÓSITO.</span></div>
+      </div>
+    </section>
   </main>
 
   <script src="script.js?v=20261020-evento"></script>
   <script src="event-showcase.js?v=20261020-evento"></script>
+  <script src="assets/pastor-motion.js?v=20261020-pastor" defer></script>
 </body>
 </html>
