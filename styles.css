@@ -25,8 +25,7 @@
   --dur-2: 0.7s;
   --dur-3: 1.1s;
 
-  --header-h: 76px;
-  --topbar-h: 34px;
+  --header-h: 90px;
   --radius: 999px;
   --container: 1240px;
 }
@@ -58,38 +57,6 @@ ul { list-style: none; }
 button { font: inherit; border: 0; background: none; cursor: pointer; color: inherit; }
 
 /* ============================================================
-   TOP BAR — marquee
-   ============================================================ */
-.topbar {
-  height: var(--topbar-h);
-  background: var(--green);
-  color: rgba(255, 255, 255, 0.86);
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  font-size: 11.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.topbar__track {
-  display: flex;
-  align-items: center;
-  gap: 26px;
-  white-space: nowrap;
-  animation: marquee 26s linear infinite;
-  will-change: transform;
-}
-
-.topbar__dot { opacity: 0.45; }
-
-@keyframes marquee {
-  to { transform: translateX(-50%); }
-}
-
-.topbar:hover .topbar__track { animation-play-state: paused; }
-
-/* ============================================================
    HEADER
    ============================================================ */
 .site-header {
@@ -114,14 +81,30 @@ button { font: inherit; border: 0; background: none; cursor: pointer; color: inh
 
 .header__inner {
   height: var(--header-h);
-  display: flex;
+  display: grid;
+  /* Columnas laterales idénticas → el nav queda centrado exacto */
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 24px;
   transition: height 0.5s var(--ease);
 }
 
-.site-header.is-scrolled .header__inner { height: 64px; }
+.site-header.is-scrolled .header__inner { height: 74px; }
+
+/* Nav centrado en la columna del medio */
+.nav {
+  justify-self: center;
+  grid-column: 2;
+}
+
+/* Brand y acciones anclados a los extremos */
+.brand { justify-self: start; grid-column: 1; }
+
+/* Acciones alineadas a la derecha */
+.header__actions {
+  justify-self: end;
+  grid-column: 3;
+}
 
 /* ---------- Brand ---------- */
 .brand {
@@ -132,40 +115,56 @@ button { font: inherit; border: 0; background: none; cursor: pointer; color: inh
 }
 
 .brand__mark {
-  width: 42px;
-  height: 42px;
+  width: 64px;
+  height: 64px;
   color: var(--green);
   display: grid;
   place-items: center;
-  transition: transform var(--dur-2) var(--ease), color var(--dur-1) var(--ease);
+  flex-shrink: 0;
+  transition: transform var(--dur-2) var(--ease);
+}
+
+.brand__mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  /* El PNG tiene fondo transparente: filtro para asegurar tono verde de marca */
+  filter: drop-shadow(0 6px 14px rgba(46, 52, 42, 0.16));
+  transition: filter var(--dur-2) var(--ease);
+}
+
+.brand:hover .brand__mark img {
+  filter: drop-shadow(0 10px 22px rgba(46, 52, 42, 0.28));
 }
 
 .brand__mark svg { width: 100%; height: 100%; }
 
 .brand:hover .brand__mark {
-  transform: scale(1.06);
+  transform: scale(1.07);
   color: var(--green-deep);
 }
 
 .brand__text {
   display: flex;
   flex-direction: column;
-  line-height: 1.05;
+  line-height: 1;
+  min-width: 0;
 }
 
 .brand__text strong {
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: 17px;
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: -0.015em;
   color: var(--green);
-  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: color var(--dur-1) var(--ease);
 }
 
-.brand__text span {
-  font-size: 10.5px;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-  color: var(--green-soft);
+/* En pantallas medianas reduce para no empujar el nav */
+@media (max-width: 1240px) {
+  .brand__text strong { font-size: 20px; }
 }
 
 /* ---------- Nav (Framer-style sliding indicator) ---------- */
@@ -188,7 +187,7 @@ button { font: inherit; border: 0; background: none; cursor: pointer; color: inh
   letter-spacing: 0.01em;
   color: var(--green-deep);
   border-radius: var(--radius);
-  transition: color var(--dur-1) var(--ease);
+  transition: color var(--dur-1) var(--ease), font-weight var(--dur-1) var(--ease);
 }
 
 /* underline reveal suave */
@@ -199,7 +198,7 @@ button { font: inherit; border: 0; background: none; cursor: pointer; color: inh
   left: 0;
   bottom: -3px;
   width: 100%;
-  height: 1.2px;
+  height: 1.4px;
   background: currentColor;
   transform: scaleX(0);
   transform-origin: right;
@@ -211,20 +210,25 @@ button { font: inherit; border: 0; background: none; cursor: pointer; color: inh
   transform-origin: left;
 }
 
-.nav__link.is-active { color: var(--white); }
+/* Estado activo: texto verde intenso, legible sobre el fondo claro */
+.nav__link.is-active {
+  color: var(--green);
+  font-weight: 600;
+}
 
-/* the sliding pill that follows the cursor */
+/* the sliding pill that follows the cursor — borde + tinte, no relleno sólido */
 .nav__indicator {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
   border-radius: var(--radius);
-  background: var(--green);
-  box-shadow: 0 6px 18px -8px rgba(46, 52, 42, 0.6);
+  background: rgba(66, 74, 61, 0.09);
+  border: 1px solid rgba(66, 74, 61, 0.35);
+  box-shadow: 0 8px 22px -14px rgba(46, 52, 42, 0.5);
   opacity: 0;
   pointer-events: none;
-  transform: scale(0.9);
+  transform: scale(0.92);
   transition:
     transform var(--dur-2) var(--ease),
     width var(--dur-2) var(--ease),
@@ -241,43 +245,6 @@ button { font: inherit; border: 0; background: none; cursor: pointer; color: inh
   align-items: center;
   gap: 14px;
   flex-shrink: 0;
-}
-
-.date-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 14px;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  font-size: 11.5px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--green);
-  transition: border-color 0.4s var(--ease), background 0.4s var(--ease);
-}
-
-.date-pill:hover { border-color: var(--green); background: var(--green-tint); }
-
-.date-pill__pulse {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--green);
-  position: relative;
-}
-.date-pill__pulse::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 1px solid var(--green);
-  animation: pulse 2s var(--ease) infinite;
-}
-@keyframes pulse {
-  0%   { transform: scale(0.5); opacity: 0.9; }
-  100% { transform: scale(1.6); opacity: 0; }
 }
 
 /* ============================================================
@@ -396,6 +363,160 @@ button { font: inherit; border: 0; background: none; cursor: pointer; color: inh
 }
 
 /* ============================================================
+   WAVE REVEAL BUTTON — port del componente de Framer
+   (S1VRPa / fuWldc87dwJ27x3jDkBQ)
+   El blob de ola nace fuera del botón y lo cubre en hover.
+   ============================================================ */
+.wave-btn {
+  /* Shape de ola tomada del vector original de Framer */
+  --wave-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 14'%3E%3Cpath d='M 5 3.523 C 5.078 3.523 5.155 3.525 5.233 3.528 C 5.873 1.483 7.765 0 10 0 C 12.761 0 15 2.264 15 5.057 C 15 7.85 12.761 10.114 10 10.114 C 9.922 10.114 9.845 10.112 9.767 10.108 C 9.127 12.154 7.235 13.636 5 13.636 C 2.239 13.636 0 11.372 0 8.58 C 0 5.787 2.239 3.523 5 3.523 Z' fill='black'/%3E%3C/svg%3E");
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 13px 24px;
+  border-radius: 24px;
+  overflow: hidden;
+  isolation: isolate;
+  cursor: pointer;
+  text-decoration: none;
+  background: var(--white);
+  color: var(--green-deep);
+  border: 1px solid var(--white);
+  will-change: transform;
+  transition:
+    transform 0.5s var(--ease),
+    box-shadow 0.5s var(--ease),
+    border-color 0.5s var(--ease),
+    background-color 0.5s var(--ease);
+}
+
+/* Etiqueta */
+.wave-btn__label {
+  position: relative;
+  z-index: 3;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.45;
+  white-space: nowrap;
+  transition: color 0.45s var(--ease);
+}
+/* Contenedor del icono: se empuja a la izquierda en hover */
+.wave-btn__icon {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+  transition: transform 0.6s var(--ease);
+}
+
+.wave-btn__arrow {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  transition: color 0.45s var(--ease);
+}
+
+/* El blob de ola — posicionado fuera por defecto */
+.wave-btn__wave {
+  position: absolute;
+  z-index: 1;
+  top: -100px;
+  left: -84px;
+  width: 132px;
+  height: 123px;
+  background-color: var(--green);
+  -webkit-mask: var(--wave-shape) no-repeat center / auto;
+  mask: var(--wave-shape) no-repeat center / auto;
+  pointer-events: none;
+  /* Spring: bounce 0, duration 1 */
+  transition:
+    width 0.9s var(--ease),
+    height 0.9s var(--ease),
+    top 0.9s var(--ease),
+    left 0.9s var(--ease),
+    right 0.9s var(--ease),
+    bottom 0.9s var(--ease),
+    background-color 0.45s var(--ease);
+  will-change: width, height, top, left;
+}
+
+/* ---------- HOVER: la ola cubre el botón ---------- */
+.wave-btn:hover .wave-btn__wave,
+.wave-btn:focus-visible .wave-btn__wave {
+  top: auto;
+  left: auto;
+  bottom: -153px;
+  right: -53px;
+  width: calc(100% + 137px);
+  height: 307px;
+}
+
+.wave-btn:hover .wave-btn__label,
+.wave-btn:focus-visible .wave-btn__label { color: var(--white); }
+
+.wave-btn:hover .wave-btn__arrow,
+.wave-btn:focus-visible .wave-btn__arrow { color: var(--white); }
+
+/* La flecha se desliza: justify-content flex-start */
+.wave-btn:hover .wave-btn__icon,
+.wave-btn:focus-visible .wave-btn__icon {
+  justify-content: flex-start;
+  transform: translateX(-2px);
+}
+
+.wave-btn:hover {
+  box-shadow: 0 22px 48px -18px rgba(46, 52, 42, 0.6);
+}
+
+/* ---------- PRESSED: todo escala 0.95 ---------- */
+.wave-btn:active { transform: scale(0.95); }
+.wave-btn:active .wave-btn__label,
+.wave-btn:active .wave-btn__icon { transform: scale(0.95); }
+
+/* ---------- Variante outline (sobre el video) ---------- */
+.wave-btn--outline {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.42);
+  color: var(--white);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.wave-btn--outline .wave-btn__wave { background-color: var(--white); }
+
+.wave-btn--outline:hover {
+  color: var(--green-deep);
+  border-color: var(--white);
+}
+.wave-btn--outline:hover .wave-btn__label,
+.wave-btn--outline:hover .wave-btn__arrow { color: var(--green-deep); }
+
+.wave-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.75);
+  outline-offset: 3px;
+}
+
+/* Tamaño grande para el hero */
+.hero__actions .wave-btn { padding: 16px 30px; border-radius: 28px; }
+.hero__actions .wave-btn__label { font-size: 16px; }
+
+/* Tamaño compacto para el header */
+.wave-btn--sm {
+  padding: 10px 20px;
+  border-radius: 999px;
+  gap: 9px;
+}
+.wave-btn--sm .wave-btn__label { font-size: 14px; }
+
+/* ============================================================
    MENU TOGGLE
    ============================================================ */
 .menu-toggle {
@@ -431,7 +552,7 @@ button { font: inherit; border: 0; background: none; cursor: pointer; color: inh
    ============================================================ */
 .mobile-menu {
   position: fixed;
-  inset: calc(var(--topbar-h) + var(--header-h)) 0 0 0;
+  inset: var(--header-h) 0 0 0;
   background: var(--white);
   padding: 40px 24px 32px;
   display: flex;
@@ -444,6 +565,10 @@ button { font: inherit; border: 0; background: none; cursor: pointer; color: inh
     transform 0.5s var(--ease),
     visibility 0.5s;
   z-index: 90;
+  /* El menú nunca arrastra scroll a la página: si su contenido no cabe
+     (móvil apaisado, pantallas bajas) se desplaza solo él. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .mobile-menu.is-open {
@@ -512,7 +637,7 @@ body.menu-open { overflow: hidden; }
    HERO (stub — secciones siguientes)
    ============================================================ */
 .hero {
-  min-height: calc(100vh - var(--header-h) - var(--topbar-h));
+  min-height: calc(100vh - var(--header-h));
   display: flex;
   align-items: center;
   background: var(--green-deep); /* fallback mientras no hay video */
@@ -520,31 +645,108 @@ body.menu-open { overflow: hidden; }
   overflow: hidden;
 }
 
-/* ---- Video de fondo ---- */
+/* ---- Video de fondo ----
+   Desplazado a la derecha para que su contenido no quede bajo el texto.
+   La escala extra (+18%) garantiza que siga cubriendo el hero completo. */
 .hero__bg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 72% center;
+  transform: scale(1.18) translateX(6%);
+  transform-origin: center right;
   z-index: 0;
 }
 
-/* Velo para legibilidad del texto — verde -> transparente */
+/* Filtro de desenfoque por capas: se aplica un blur real al video,
+   y una máscara de degradado lo revela solo hacia la izquierda */
+.hero__bg-blur {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  /* El blur vive solo bajo el texto: se desvanece antes de la zona nítida */
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 30%, rgba(0,0,0,0.85) 46%, rgba(0,0,0,0.4) 58%, transparent 72%);
+  mask-image: linear-gradient(90deg, #000 0%, #000 30%, rgba(0,0,0,0.85) 46%, rgba(0,0,0,0.4) 58%, transparent 72%);
+}
+
+.hero__bg-blur video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 72% center;
+  transform: scale(1.18) translateX(6%);
+  transform-origin: center right;
+  filter: blur(26px) saturate(1.05);
+  /* El blur difumina más allá de los bordes; el scale lo absorbe */
+}
+
+/* Velo lateral direccional — el video se ve nítido a la derecha,
+   se oscurece y difumina hacia la izquierda donde vive el texto */
 .hero__scrim {
   position: absolute;
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(180deg, rgba(46, 52, 42, 0.78) 0%, rgba(46, 52, 42, 0.52) 45%, rgba(46, 52, 42, 0.82) 100%);
-  backdrop-filter: saturate(0.85);
+    /* 1. Oscurecido lateral: protege el texto sin matar el video */
+    linear-gradient(
+      100deg,
+      rgba(31, 36, 28, 0.86) 0%,
+      rgba(31, 36, 28, 0.72) 20%,
+      rgba(31, 36, 28, 0.42) 38%,
+      rgba(31, 36, 28, 0.10) 56%,
+      rgba(31, 36, 28, 0) 72%
+    ),
+    /* 2. Anclaje inferior para el bloque de texto */
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 50%,
+      rgba(25, 29, 22, 0.42) 100%
+    );
 }
+
+/* En pantallas estrechas el texto ocupa todo el ancho:
+   el velo pasa a ser horizontal parejo y el video vuelve al centro */
+@media (max-width: 900px) {
+  .hero__scrim {
+    background:
+      linear-gradient(180deg, rgba(31, 36, 28, 0.55) 0%, rgba(31, 36, 28, 0.68) 40%, rgba(25, 29, 22, 0.92) 100%);
+  }
+
+  .hero__bg,
+  .hero__bg-blur video {
+    object-position: center;
+    transform: scale(1.1);
+    transform-origin: center;
+  }
+
+  .hero__bg-blur {
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 55%);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 55%);
+  }
+
+  .hero__bg-blur video { filter: blur(32px); }
+}
+
+/* El blur es un tratamiento visual, no una animación:
+   se mantiene aunque el usuario prefiera menos movimiento. */
 
 .hero__inner {
   position: relative;
   z-index: 2;
-  text-align: center;
-  padding: 90px 0;
+  padding: 140px 0 80px;
+  min-height: calc(100vh - var(--header-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  text-align: left;
 }
 
 .hero__eyebrow {
@@ -561,7 +763,7 @@ body.menu-open { overflow: hidden; }
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--white);
-  margin-bottom: 30px;
+  margin-bottom: 26px;
   transition: background var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease);
 }
 .hero__eyebrow:hover {
@@ -569,14 +771,36 @@ body.menu-open { overflow: hidden; }
   border-color: rgba(255, 255, 255, 0.5);
 }
 
+/* Punto pulsante del eyebrow */
+.hero__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--white);
+  position: relative;
+  flex-shrink: 0;
+}
+.hero__dot::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--white);
+  animation: pulse 2s var(--ease) infinite;
+}
+@keyframes pulse {
+  0%   { transform: scale(0.5); opacity: 0.9; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
 .hero__title {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: clamp(52px, 9vw, 124px);
-  line-height: 0.98;
+  font-size: clamp(42px, 5.6vw, 84px);
+  line-height: 1;
   letter-spacing: -0.03em;
   color: var(--white);
-  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.25);
+  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.35);
 }
 
 .hero__title em {
@@ -587,19 +811,54 @@ body.menu-open { overflow: hidden; }
 }
 
 .hero__lead {
-  max-width: 540px;
-  margin: 28px auto 0;
-  font-size: clamp(16px, 2vw, 19px);
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.82);
+  max-width: 480px;
+  margin: 24px 0 0;
+  font-size: clamp(15px, 1.6vw, 18px);
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.84);
 }
 
 .hero__actions {
-  margin-top: 42px;
+  margin-top: 38px;
   display: flex;
-  gap: 16px;
-  justify-content: center;
+  gap: 14px;
+  justify-content: flex-start;
   flex-wrap: wrap;
+}
+
+/* El bloque de contenido no invade la zona nítida del video */
+.hero__content {
+  position: relative;
+  max-width: min(560px, 42%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 30px;
+}
+
+/* Línea de acento vertical — ancla editorial del bloque */
+.hero__content::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 1.5px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.55) 18%,
+    rgba(255, 255, 255, 0.55) 82%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Móviles: el texto ocupa el ancho completo */
+@media (max-width: 900px) {
+  .hero__content {
+    max-width: 100%;
+    padding-left: 20px;
+  }
 }
 
 /* ============================================================
@@ -607,16 +866,19 @@ body.menu-open { overflow: hidden; }
    ============================================================ */
 @media (max-width: 1080px) {
   .nav { display: none; }
-  .date-pill { display: none; }
   .menu-toggle { display: block; }
+  .header__inner { grid-template-columns: auto 1fr; }
+  .brand { grid-column: 1; }
+  .header__actions { grid-column: 2; justify-self: end; }
 }
 
 @media (max-width: 640px) {
-  :root { --header-h: 66px; }
+  :root { --header-h: 76px; }
   .container { width: min(100% - 32px, var(--container)); }
-  .header__actions .btn--solid { display: none; }
-  .brand__text strong { font-size: 15.5px; }
-  .mobile-menu { inset: calc(var(--topbar-h) + var(--header-h)) 0 0 0; }
+  .header__actions .wave-btn { display: none; }
+  .brand__mark { width: 50px; height: 50px; }
+  .brand__text strong { font-size: 18px; }
+  .mobile-menu { inset: var(--header-h) 0 0 0; }
 }
 
 /* ============================================================

@@ -153,6 +153,40 @@
     if (e.key === "Escape") setMenu(false);
   });
 
-  /* ---------- 6. Entrada del header al cargar ---------- */
+  /* ---------- 6. Sincronizar las dos capas de video ----------
+     La capa con blur y la capa nítida deben reproducirse idénticas
+     para que la máscara no muestre costuras. */
+  const heroVideos = [...document.querySelectorAll(".hero__bg, .hero__bg-blur video")];
+  if (heroVideos.length > 1) {
+    const [main, ...rest] = heroVideos;
+
+    const syncVideos = () => {
+      rest.forEach((v) => {
+        // Si el desfase supera un umbral perceptible, reajusta
+        if (Math.abs(v.currentTime - main.currentTime) > 0.06) {
+          try { v.currentTime = main.currentTime; } catch (_) {}
+        }
+        // Igualar estado de reproducción
+        if (main.paused && !v.paused) v.pause();
+        if (!main.paused && v.paused) v.play().catch(() => {});
+      });
+    };
+
+    // El video principal marca el ritmo; el secundario lo sigue
+    main.addEventListener("play", syncVideos);
+    main.addEventListener("seeked", syncVideos);
+    main.addEventListener("timeupdate", syncVideos);
+    main.addEventListener("playing", syncVideos);
+
+    // Si el blur queda pausado por el navegador, arrancarlo
+    rest.forEach((v) => {
+      v.addEventListener("loadeddata", () => {
+        try { v.currentTime = main.currentTime; } catch (_) {}
+        v.play().catch(() => {});
+      });
+    });
+  }
+
+  /* ---------- 7. Entrada del header al cargar ---------- */
   document.body.classList.add("is-ready");
 })();
