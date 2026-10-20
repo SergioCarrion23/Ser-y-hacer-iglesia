@@ -55,14 +55,29 @@
   const video = document.querySelector('.hero__bg');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   function syncVideo() {
-    if (reducedMotion.matches || document.hidden) video.pause();
-    else video.play().catch(() => {});
+    video.autoplay = !reducedMotion.matches;
+    if (reducedMotion.matches || document.hidden) {
+      video.pause();
+      return;
+    }
+    if (video.paused) {
+      // Keep the poster if the browser denies playback; a user gesture can retry.
+      video.play().catch(() => {});
+    }
   }
   video.muted = true;
+  video.defaultMuted = true;
+  video.playsInline = true;
   syncVideo();
   video.addEventListener('loadeddata', syncVideo);
+  video.addEventListener('canplay', syncVideo);
   reducedMotion.addEventListener('change', syncVideo);
   document.addEventListener('visibilitychange', syncVideo);
+  window.addEventListener('pageshow', syncVideo);
+  // Call play synchronously inside the gesture for browsers requiring activation.
+  ['click', 'touchend', 'keydown'].forEach(type => {
+    document.addEventListener(type, syncVideo, { capture: true, passive: true });
+  });
 
   /* Inline RSVP: merge the actual hero actions, then expand their glass surface. */
   const hero = document.querySelector('.hero');
