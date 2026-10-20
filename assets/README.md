@@ -10,7 +10,10 @@
   y el favicon.
 
 El video se reproduce con `autoplay`, `muted`, `loop` y `playsinline`. Se pausa
-cuando la pestaña está oculta o cuando el visitante prefiere reducir el movimiento.
+cuando la pestaña está oculta. El video y las transiciones del formulario están
+activos independientemente de la preferencia de movimiento del sistema.
+Si el navegador bloquea el inicio automático, un clic o toque vuelve a intentar
+la reproducción; los bloqueos explícitos del navegador siguen teniendo prioridad.
 Los archivos se sirven desde este repositorio, sin depender de enlaces temporales
 de la plataforma de generación.
 

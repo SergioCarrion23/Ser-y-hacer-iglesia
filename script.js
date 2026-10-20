@@ -53,10 +53,8 @@
   });
 
   const video = document.querySelector('.hero__bg');
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   function syncVideo() {
-    video.autoplay = !reducedMotion.matches;
-    if (reducedMotion.matches || document.hidden) {
+    if (document.hidden) {
       video.pause();
       return;
     }
@@ -68,10 +66,10 @@
   video.muted = true;
   video.defaultMuted = true;
   video.playsInline = true;
+  video.autoplay = true;
   syncVideo();
   video.addEventListener('loadeddata', syncVideo);
   video.addEventListener('canplay', syncVideo);
-  reducedMotion.addEventListener('change', syncVideo);
   document.addEventListener('visibilitychange', syncVideo);
   window.addEventListener('pageshow', syncVideo);
   // Call play synchronously inside the gesture for browsers requiring activation.
@@ -94,15 +92,36 @@
   let rsvpState = 'closed';
   let returnTo = null;
   let closeAfterOpening = false;
+  let openAfterClosing = null;
   let viewChanging = false;
-  const motionOff = () => reducedMotion.matches || !Element.prototype.animate;
+  const motionOff = () => !Element.prototype.animate;
+  const activeAnimations = new Set();
   const center = rect => ({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
   const animate = (element, frames, options) => {
     const animation = element.animate(frames, { fill: 'both', easing: 'cubic-bezier(.22,1,.36,1)', ...options });
+    activeAnimations.add(animation);
     return animation;
   };
   const finish = animations => Promise.all(animations.map(animation => animation.finished.catch(() => {})));
-  const clearAnimations = animations => animations.forEach(animation => animation.cancel());
+  const clearAnimations = animations => animations.forEach(animation => {
+    animation.cancel();
+    activeAnimations.delete(animation);
+  });
+  // Finish in the current layout if orientation or viewport size changes mid-morph.
+  const finishMotionOnResize = () => clearAnimations([...activeAnimations]);
+  window.addEventListener('resize', finishMotionOnResize);
+  window.visualViewport?.addEventListener('resize', finishMotionOnResize);
+  function createGlassSurface(rect) {
+    const surface = document.createElement('div');
+    surface.className = 'glass-shell glass-morph';
+    surface.setAttribute('aria-hidden', 'true');
+    Object.assign(surface.style, {
+      left: `${rect.left}px`, top: `${rect.top}px`,
+      width: `${rect.width}px`, height: `${rect.height}px`
+    });
+    document.body.append(surface);
+    return surface;
+  }
   function setRsvpLayout(open) {
     hero.classList.toggle('is-registering', open);
     heroIntro.hidden = open;
@@ -120,6 +139,7 @@
   async function openRsvp(trigger) {
     if (rsvpState !== 'closed') {
       if (rsvpState === 'open') focusForm();
+      if (rsvpState === 'closing') openAfterClosing = trigger;
       return;
     }
     rsvpState = 'opening';
@@ -130,6 +150,7 @@
     if (actionsRect.top < 0 || actionsRect.bottom > window.innerHeight) heroActions.scrollIntoView({ block: 'center', behavior: 'instant' });
     hero.classList.add('has-rsvp-interaction');
     heroActions.inert = true;
+    hero.classList.add('is-morphing');
     rsvpTriggers.forEach(button => button.setAttribute('aria-expanded', 'true'));
 
     if (!motionOff()) {
@@ -146,7 +167,7 @@
       };
       Object.assign(fusion.style, { inset: 'auto', left: `${bounds.left}px`, top: `${bounds.top}px`, width: `${bounds.right - bounds.left}px`, height: `${bounds.bottom - bounds.top}px` });
       document.body.append(fusion);
-      const introExit = animate(heroIntro, [{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-8px)' }], { duration: 140 });
+      const introExit = animate(heroIntro, [{ opacity: 1, transform: 'translateY(0)' }, { opacity: 0, transform: 'translateY(-6px)' }], { duration: 100 });
       const outgoing = [
         introExit,
         animate(heroActions, [{ opacity: 1 }, { opacity: 0 }], { duration: 110 })
@@ -161,20 +182,24 @@
           { transform: 'translate(0,0) scale(1)', opacity: 0 },
           { transform: 'translate(0,0) scale(1)', opacity: .9, offset: .12 },
           { transform: `translate(${target.x - origin.x}px,${target.y - origin.y}px) scale(.96,1.05)`, opacity: .9 }
-        ], { duration: 300, easing: 'cubic-bezier(.4,0,.2,1)' }));
+        ], { duration: 240, easing: 'cubic-bezier(.4,0,.2,1)' }));
       });
       // Grow the glass while the buttons are still merging, on one overlapping timeline.
       await finish([introExit]);
       setRsvpLayout(true);
       const panelRect = rsvpPanel.getBoundingClientRect();
+      const surface = createGlassSurface(panelRect);
       const destination = center(panelRect);
       const originTransform = `translate(${target.x - destination.x}px,${target.y - destination.y}px) scale(${Math.min(245, panelRect.width * .8) / panelRect.width},${58 / panelRect.height})`;
       const incoming = [
-        animate(glassShell, [{ transform: originTransform, borderRadius: '180px', opacity: .3 }, { transform: 'translate(0,0) scale(1)', borderRadius: window.innerWidth <= 700 ? '24px' : '30px', opacity: 1 }], { duration: 460, easing: 'cubic-bezier(.22,.8,.24,1)' }),
-        animate(panelContent, [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 260, delay: 150 }),
-        animate(fusion, [{ opacity: 1 }, { opacity: 0 }], { duration: 180 })
+        // Only this lightweight surface scales; the real backdrop blur stays still.
+        animate(surface, [{ transform: originTransform, opacity: .85 }, { transform: 'translate(0,0) scale(1)', opacity: 0 }], { duration: 420 }),
+        animate(glassShell, [{ opacity: 0 }, { opacity: 1 }], { duration: 260, delay: 100 }),
+        animate(panelContent, [{ opacity: 0, transform: 'translateY(8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 280, delay: 110 }),
+        animate(fusion, [{ opacity: 1 }, { opacity: 0 }], { duration: 160 })
       ];
       await finish(incoming);
+      surface.remove();
       fusion.remove();
       clearAnimations(outgoing);
       clearAnimations(incoming);
@@ -182,6 +207,7 @@
       setRsvpLayout(true);
     }
     heroActions.inert = false;
+    hero.classList.remove('is-morphing');
     rsvpState = 'open';
     if (closeAfterOpening) closeRsvp();
     else focusForm();
@@ -191,16 +217,21 @@
     if (rsvpState === 'opening') { closeAfterOpening = true; return; }
     if (rsvpState !== 'open') return;
     rsvpState = 'closing';
+    openAfterClosing = null;
+    hero.classList.add('is-morphing');
+    // Dismiss the mobile keyboard before measuring the return to the hero.
+    if (rsvpPanel.contains(document.activeElement)) document.activeElement.blur();
     const panelRect = rsvpPanel.getBoundingClientRect();
     const origin = center(panelRect);
-    const clone = motionOff() ? null : glassShell.cloneNode(true);
+    const clone = motionOff() ? null : createGlassSurface(panelRect);
     if (clone) {
-      clone.classList.add('glass-return');
-      Object.assign(clone.style, { left: `${panelRect.left}px`, top: `${panelRect.top}px`, width: `${panelRect.width}px`, height: `${panelRect.height}px` });
-      const fade = animate(panelContent, [{ opacity: 1 }, { opacity: 0, transform: 'translateY(4px)' }], { duration: 80 });
-      await finish([fade]);
-      clearAnimations([fade]);
-      document.body.append(clone);
+      const fading = [
+        animate(panelContent, [{ opacity: 1 }, { opacity: 0, transform: 'translateY(4px)' }], { duration: 100 }),
+        animate(glassShell, [{ opacity: 1 }, { opacity: 0 }], { duration: 100 }),
+        animate(clone, [{ opacity: 0 }, { opacity: 1 }], { duration: 100 })
+      ];
+      await finish(fading);
+      clearAnimations(fading);
     }
     setRsvpLayout(false);
     if (clone) {
@@ -208,20 +239,27 @@
       const returning = [
         animate(clone, [
           { transform: 'translate(0,0) scale(1)', opacity: 1 },
-          { transform: `translate(${target.x - origin.x}px,${target.y - origin.y}px) scale(${245 / panelRect.width},${56 / panelRect.height})`, opacity: 0, borderRadius: '180px' }
+          { transform: `translate(${target.x - origin.x}px,${target.y - origin.y}px) scale(${Math.min(245, panelRect.width * .8) / panelRect.width},${56 / panelRect.height})`, opacity: 0 }
         ], { duration: 340 }),
-        animate(heroIntro, [{ opacity: 0, transform: 'translateY(-8px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 260, delay: 80 }),
-        animate(heroActions, [{ opacity: 0 }, { opacity: 1 }], { duration: 220, delay: 200 })
+        animate(heroIntro, [{ opacity: 0, transform: 'translateY(-6px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 280, delay: 40 }),
+        animate(heroActions, [{ opacity: 0 }, { opacity: 1 }], { duration: 240, delay: 100 })
       ];
       actionButtons.forEach(button => {
         const destination = center(button.getBoundingClientRect());
-        returning.push(animate(button, [{ transform: `translate(${target.x - destination.x}px,${target.y - destination.y}px) scale(.96)`, opacity: 0 }, { transform: 'translate(0,0) scale(1)', opacity: 1 }], { duration: 220, delay: 200 }));
+        returning.push(animate(button, [{ transform: `translate(${target.x - destination.x}px,${target.y - destination.y}px) scale(.96)`, opacity: 0 }, { transform: 'translate(0,0) scale(1)', opacity: 1 }], { duration: 240, delay: 100 }));
       });
       await finish(returning);
       clone.remove();
       clearAnimations(returning);
     }
+    hero.classList.remove('is-morphing');
     rsvpState = 'closed';
+    if (openAfterClosing) {
+      const trigger = openAfterClosing;
+      openAfterClosing = null;
+      openRsvp(trigger);
+      return;
+    }
     if (returnTo && returnTo.offsetParent !== null && !returnTo.closest('[inert]')) returnTo.focus({ preventScroll: true });
     else heroActions.querySelector('[data-open-rsvp]').focus({ preventScroll: true });
   }

@@ -16,6 +16,7 @@ html { scroll-behavior: smooth; }
 body { font-family: var(--font-body); background: var(--deep); color: var(--ink); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 a { color: inherit; text-decoration: none; }
 button { border: 0; background: none; cursor: pointer; color: inherit; font: inherit; }
+a, button, .party-options label { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 ul { list-style: none; }
 img { display: block; max-width: 100%; }
 ::selection { background: #c8d4b5; color: var(--deep); }
@@ -81,13 +82,11 @@ body.menu-open { overflow: hidden; }
 .hero__title em { font-weight: 400; color: #dce5cd; }
 .hero__lead { max-width: 450px; margin: 25px auto 0; font-size: 16px; line-height: 1.8; color: #ebefdfed; font-weight: 400; }
 .hero__actions { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin: 35px auto 0; }
-@media (prefers-reduced-motion: no-preference) {
-  .hero__eyebrow, .hero__title, .hero__lead, .hero__actions { animation: enter .8s var(--ease) both; }
-  .hero__title { animation-delay: .08s; }
-  .hero__lead { animation-delay: .15s; }
-  .hero__actions { animation-delay: .22s; }
-  @keyframes enter { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
-}
+.hero__eyebrow, .hero__title, .hero__lead, .hero__actions { animation: enter .8s var(--ease) both; }
+.hero__title { animation-delay: .08s; }
+.hero__lead { animation-delay: .15s; }
+.hero__actions { animation-delay: .22s; }
+@keyframes enter { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 @media (max-width: 1250px) {
   .container { width: calc(100% - 64px); }
   .header__inner { gap: 20px; }
@@ -130,11 +129,6 @@ body.menu-open { overflow: hidden; }
   .hero__inner { padding-top: 58px; }
   .hero__actions .wave-btn { width: 100%; justify-content: space-between; }
 }
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *,*::before,*::after { animation: none !important; transition: none !important; }
-}
-
 /* The two actions become one glass surface, inside the existing hero. */
 .rsvp-stage { position: relative; width: 100%; margin: 35px auto 0; }
 .rsvp-stage .hero__actions { margin-top: 0; }
@@ -150,9 +144,11 @@ body.menu-open { overflow: hidden; }
 .rsvp-topline { display: flex; align-items: center; gap: 20px; min-height: 18px; padding-right: 40px; margin-bottom: 10px; }
 .rsvp-kicker { display: inline-flex; align-items: center; gap: 9px; font-size: 8px; font-weight: 500; letter-spacing: 1.7px; color: #e1e9d5; }
 .rsvp-spark { font-size: 18px; line-height: 1; color: #e4efd6; }
-.rsvp-close { position: absolute; top: 12px; right: 14px; width: 36px; height: 36px; display: grid; place-items: center; flex-shrink: 0; border: 1px solid #f8fff12b; border-radius: 50%; background: #f5ffed0a; transition: background .2s,transform .3s; }
-.rsvp-close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
-.rsvp-close:hover { background: #f5ffed21; transform: rotate(90deg); }
+.rsvp-close { position: absolute; top: 8px; right: 10px; width: 44px; height: 44px; display: grid; place-items: center; flex-shrink: 0; border-radius: 50%; transition: transform .3s; }
+.rsvp-close::before { content: ""; position: absolute; inset: 4px; border: 1px solid #f8fff12b; border-radius: inherit; background: #f5ffed0a; transition: background .2s; }
+.rsvp-close svg { position: relative; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+.rsvp-close:hover { transform: rotate(90deg); }
+.rsvp-close:hover::before { background: #f5ffed21; }
 .rsvp-panel h2 { font: 400 30px/1.14 var(--font-display); letter-spacing: -1px; }
 .rsvp-panel h2:focus { outline: none; }
 .rsvp-panel h2 em { color: #dce8ca; font-weight: 400; }
@@ -202,10 +198,12 @@ body.menu-open { overflow: hidden; }
 .preview-notice > span { font-size: 8px; letter-spacing: 1.5px; color: #e6edc7; }
 .preview-notice > p { font-size: 11px; line-height: 1.7; color: #e3ead9; margin-top: 7px; }
 .rsvp-return { display: block; margin: 8px auto 0; min-height: 35px; font-size: 11px; color: #e2eada; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: #e2eada55; }
-.liquid-defs { position: absolute; width: 0; height: 0; pointer-events: none; }
-.liquid-fusion-layer { position: fixed; inset: 0; z-index: 45; pointer-events: none; filter: url(#liquid-fusion); }
-.liquid-blob { position: absolute; border-radius: 999px; background: linear-gradient(135deg,rgba(247,255,234,.78),rgba(208,230,186,.5)); box-shadow: inset 0 1px 0 #fff; }
-.glass-return { position: fixed; z-index: 45; inset: auto; pointer-events: none; }
+.liquid-fusion-layer { position: fixed; inset: 0; z-index: 45; pointer-events: none; contain: layout paint; }
+.liquid-blob { position: absolute; border-radius: 999px; background: linear-gradient(135deg,rgba(247,255,234,.78),rgba(208,230,186,.5)); box-shadow: inset 0 1px 0 #fff; will-change: transform,opacity; }
+.glass-morph { position: fixed; z-index: 45; inset: auto; pointer-events: none; backdrop-filter: none; -webkit-backdrop-filter: none; background: linear-gradient(135deg,rgba(80,103,70,.92),rgba(27,48,32,.88)); box-shadow: inset 0 1px 0 #ffffff66,0 12px 32px #08140c30; will-change: transform,opacity; }
+.hero.is-morphing .hero__intro, .hero.is-morphing .hero__actions, .hero.is-morphing .rsvp-panel__content { will-change: transform,opacity; }
+.hero.is-morphing .glass-shell { will-change: opacity; }
+.hero.is-morphing .wave-btn--outline { backdrop-filter: none; -webkit-backdrop-filter: none; }
 @supports not (backdrop-filter: blur(1px)) {
   .glass-shell { background: linear-gradient(135deg,rgba(95,113,81,.97),rgba(35,54,36,.98)); }
 }
@@ -214,10 +212,10 @@ body.menu-open { overflow: hidden; }
   .hero.is-registering .hero__inner { padding-block: 12px; }
   .rsvp-panel__content { padding: 18px 20px 16px; }
   .rsvp-panel h2 { font-size: 28px; }
-  .glass-shell { border-radius: 24px; }
+  .glass-shell { border-radius: 24px; backdrop-filter: blur(16px) saturate(1.4); -webkit-backdrop-filter: blur(16px) saturate(1.4); }
+  .glass-morph { backdrop-filter: none; -webkit-backdrop-filter: none; }
   .rsvp-topline { margin-bottom: 8px; }
   .rsvp-kicker { font-size: 7px; letter-spacing: 1.3px; }
-  .rsvp-close { width: 36px; height: 36px; }
   .rsvp-field input { font-size: 16px; padding-inline: 12px; }
   .rsvp-field input::placeholder { font-size: 12px; }
   .rsvp-field label, .rsvp-party legend { font-size: 11px; }
