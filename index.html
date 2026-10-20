@@ -41,8 +41,8 @@
       <!-- Navigation -->
       <nav class="nav" id="nav" aria-label="Principal">
         <ul class="nav__list">
-          <li class="nav__item"><a class="nav__link" href="#evento"><span>El evento</span></a></li>
-          <li class="nav__item"><a class="nav__link" href="#ponentes"><span>Ponentes</span></a></li>
+          <li class="nav__item"><a class="nav__link" href="#evento"><span>Evento</span></a></li>
+          <li class="nav__item"><a class="nav__link" href="#ponentes"><span>Ponente</span></a></li>
           <li class="nav__item"><a class="nav__link" href="#programa"><span>Programa</span></a></li>
           <li class="nav__item"><a class="nav__link" href="#ubicacion"><span>Ubicación</span></a></li>
           <li class="nav__item"><a class="nav__link" href="#faq"><span>FAQ</span></a></li>
@@ -52,14 +52,8 @@
 
       <!-- Actions -->
       <div class="header__actions">
-        <a href="#registro" class="wave-btn wave-btn--sm magnetic" data-magnetic>
-          <span class="wave-btn__label">Confirmar asistencia</span>
-          <span class="wave-btn__icon" aria-hidden="true">
-            <svg class="wave-btn__arrow" viewBox="0 0 15 14" fill="none">
-              <path d="M2 7h10M7.5 3 11.5 7l-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
-          <span class="wave-btn__wave" aria-hidden="true"></span>
+        <a href="#registro" class="neu-btn neu-btn--sm" id="openFormHeader">
+          <span class="neu-btn__label">Confirmar asistencia</span>
         </a>
 
         <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
@@ -71,15 +65,14 @@
     <!-- Mobile menu -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
       <nav class="mobile-menu__nav" aria-label="Menú móvil">
-        <a href="#evento" class="mobile-menu__link"><span>01</span> El evento</a>
-        <a href="#ponentes" class="mobile-menu__link"><span>02</span> Ponentes</a>
+        <a href="#evento" class="mobile-menu__link"><span>01</span> Evento</a>
+        <a href="#ponentes" class="mobile-menu__link"><span>02</span> Ponente</a>
         <a href="#programa" class="mobile-menu__link"><span>03</span> Programa</a>
         <a href="#ubicacion" class="mobile-menu__link"><span>04</span> Ubicación</a>
         <a href="#faq" class="mobile-menu__link"><span>05</span> FAQ</a>
       </nav>
-      <a href="#registro" class="wave-btn btn--full mobile-menu__cta">
-        <span class="wave-btn__label">Confirmar asistencia</span>
-        <span class="wave-btn__wave" aria-hidden="true"></span>
+      <a href="#registro" class="neu-btn neu-btn--full mobile-menu__cta">
+        <span class="neu-btn__label">Confirmar asistencia</span>
       </a>
       <p class="mobile-menu__date">13 &ndash; 15 de noviembre · Cupos limitados</p>
     </div>
@@ -118,33 +111,130 @@
         <div class="hero__content">
           <p class="hero__eyebrow">
             <span class="hero__dot"></span>
-            Encuentro · 13 &ndash; 15 de noviembre
+            Evento · 13 &ndash; 15 de noviembre
           </p>
           <h1 class="hero__title">Ser y Hacer <em>Iglesia</em></h1>
           <p class="hero__lead">Tres días para volver a lo esencial: la presencia, la palabra y la comunidad.</p>
-          <div class="hero__actions">
+          <div class="hero__actions" id="heroActions">
           <!-- Wave Reveal Button -->
-          <a href="#registro" class="wave-btn" data-magnetic>
-            <span class="wave-btn__label">Confirmar asistencia</span>
-            <span class="wave-btn__icon" aria-hidden="true">
-              <!-- Flecha (se desliza a la izquierda en hover) -->
-              <svg class="wave-btn__arrow" viewBox="0 0 15 14" fill="none">
-                <path d="M2 7h10M7.5 3 11.5 7l-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <span class="wave-btn__wave" aria-hidden="true"></span>
+          <a href="#registro" class="neu-btn" id="openForm" aria-controls="registroForm" aria-expanded="false">
+            <span class="neu-btn__label">Confirmar asistencia</span>
           </a>
 
-          <a href="#ponentes" class="wave-btn wave-btn--outline" data-magnetic>
-            <span class="wave-btn__label">Conocer al conferencista</span>
-            <span class="wave-btn__icon" aria-hidden="true">
-              <svg class="wave-btn__arrow" viewBox="0 0 15 14" fill="none">
-                <path d="M2 7h10M7.5 3 11.5 7l-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <span class="wave-btn__wave" aria-hidden="true"></span>
+          <a href="#ponentes" class="neu-btn">
+            <span class="neu-btn__label">Conocer al ponente</span>
           </a>
           </div>
+
+          <!-- ====== FORMULARIO LIQUID GLASS (oculto hasta confirmar) ====== -->
+          <form
+            class="glass-form"
+            id="registroForm"
+            data-open="false"
+            novalidate
+            aria-hidden="true"
+          >
+            <!-- Brillo que sigue al cursor -->
+            <span class="glass-form__glow" aria-hidden="true"></span>
+
+            <div class="glass-form__head">
+              <p class="glass-form__eyebrow">
+                <span class="glass-form__dot">
+                  <span class="glass-form__dot-pulse"></span>
+                </span>
+                Cupos limitados
+              </p>
+              <h2 class="glass-form__title">Confirma tu asistencia</h2>
+              <p class="glass-form__sub">Completa tus datos y guarda tu lugar en el encuentro.</p>
+            </div>
+
+            <div class="glass-form__grid">
+              <label class="field">
+                <span class="field__label">Nombre completo</span>
+                <input
+                  class="field__input"
+                  type="text"
+                  name="nombre"
+                  autocomplete="name"
+                  placeholder="Tu nombre"
+                  required
+                />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Correo electrónico</span>
+                <input
+                  class="field__input"
+                  type="email"
+                  name="email"
+                  autocomplete="email"
+                  placeholder="tucorreo@ejemplo.com"
+                  required
+                />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Teléfono</span>
+                <input
+                  class="field__input"
+                  type="tel"
+                  name="telefono"
+                  autocomplete="tel"
+                  placeholder="+57 300 000 0000"
+                  required
+                />
+              </label>
+
+              <div class="field">
+                <span class="field__label">¿Cuántas personas te acompañan?</span>
+                <div class="stepper">
+                  <button
+                    type="button"
+                    class="stepper__btn"
+                    data-step="-1"
+                    aria-label="Quitar un acompañante"
+                  >
+                    <svg viewBox="0 0 12 12" aria-hidden="true">
+                      <path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  </button>
+                  <input
+                    class="field__input stepper__input"
+                    type="number"
+                    name="acompanantes"
+                    inputmode="numeric"
+                    min="0"
+                    max="20"
+                    step="1"
+                    value="0"
+                    aria-label="Número de acompañantes"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="stepper__btn"
+                    data-step="1"
+                    aria-label="Añadir un acompañante"
+                  >
+                    <svg viewBox="0 0 12 12" aria-hidden="true">
+                      <path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-form__foot">
+              <button type="submit" class="neu-btn neu-btn--full">
+                <span class="neu-btn__label">Enviar confirmación</span>
+              </button>
+
+              <button type="button" class="glass-form__cancel" id="closeForm">
+                Volver
+              </button>
+            </div>
+          </form>
+
         </div>
       </div>
     </section>

@@ -363,158 +363,106 @@ button { font: inherit; border: 0; background: none; cursor: pointer; color: inh
 }
 
 /* ============================================================
-   WAVE REVEAL BUTTON — port del componente de Framer
-   (S1VRPa / fuWldc87dwJ27x3jDkBQ)
-   El blob de ola nace fuera del botón y lo cubre en hover.
+   NEUMORPHISM BUTTON — componente de Framer
+   (cspWkI / WL4392mebkXgSePfkiAH · "Neumorphism Buttons")
+   Con el hover elevado (y: -4px + cambio de fondo), sin halo.
+   Transición: 0.35s cubic-bezier(0.23, 1, 0.32, 1)
    ============================================================ */
-.wave-btn {
-  /* Shape de ola tomada del vector original de Framer */
-  --wave-shape: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 14'%3E%3Cpath d='M 5 3.523 C 5.078 3.523 5.155 3.525 5.233 3.528 C 5.873 1.483 7.765 0 10 0 C 12.761 0 15 2.264 15 5.057 C 15 7.85 12.761 10.114 10 10.114 C 9.922 10.114 9.845 10.112 9.767 10.108 C 9.127 12.154 7.235 13.636 5 13.636 C 2.239 13.636 0 11.372 0 8.58 C 0 5.787 2.239 3.523 5 3.523 Z' fill='black'/%3E%3C/svg%3E");
-
+.neu-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 13px 24px;
-  border-radius: 24px;
-  overflow: hidden;
-  isolation: isolate;
+  gap: 8px;
+  width: min-content;
+  height: min-content;
+
+  /* Padding reducido (más compacto que el original 24/32) */
+  padding: 15px 26px;
+  border-radius: 22px;
+
+  /* Fondo del componente: linear-gradient(160deg, #E2E8F0 0%, #FFFFFF 100%) */
+  background: linear-gradient(160deg, rgb(226, 232, 240) 0%, rgb(255, 255, 255) 100%);
+
+  /* Sin brillo ni resplandor alrededor del botón */
+  box-shadow: none;
+
+  border: none;
   cursor: pointer;
   text-decoration: none;
-  background: var(--white);
-  color: var(--green-deep);
-  border: 1px solid var(--white);
+  -webkit-user-select: none;
+  user-select: none;
+  overflow: visible;
   will-change: transform;
+
+  /* Easing del componente: [0.23, 1, 0.32, 1] */
   transition:
-    transform 0.5s var(--ease),
-    box-shadow 0.5s var(--ease),
-    border-color 0.5s var(--ease),
-    background-color 0.5s var(--ease);
+    transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+    background 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+    box-shadow 0.35s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Etiqueta */
-.wave-btn__label {
-  position: relative;
-  z-index: 3;
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  line-height: 1.45;
-  white-space: nowrap;
-  transition: color 0.45s var(--ease);
-}
-/* Contenedor del icono: se empuja a la izquierda en hover */
-.wave-btn__icon {
-  position: relative;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 16px;
-  height: 16px;
-  overflow: hidden;
-  transition: transform 0.6s var(--ease);
-}
-
-.wave-btn__arrow {
-  width: 16px;
-  height: 16px;
-  flex: none;
-  transition: color 0.45s var(--ease);
-}
-
-/* El blob de ola — posicionado fuera por defecto */
-.wave-btn__wave {
+/* Borde continuo que respeta el radio */
+.neu-btn::after {
+  content: "";
   position: absolute;
-  z-index: 1;
-  top: -100px;
-  left: -84px;
-  width: 132px;
-  height: 123px;
-  background-color: var(--green);
-  -webkit-mask: var(--wave-shape) no-repeat center / auto;
-  mask: var(--wave-shape) no-repeat center / auto;
+  inset: 0;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: inherit;
   pointer-events: none;
-  /* Spring: bounce 0, duration 1 */
-  transition:
-    width 0.9s var(--ease),
-    height 0.9s var(--ease),
-    top 0.9s var(--ease),
-    left 0.9s var(--ease),
-    right 0.9s var(--ease),
-    bottom 0.9s var(--ease),
-    background-color 0.45s var(--ease);
-  will-change: width, height, top, left;
+  transition: border-color 0.35s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* ---------- HOVER: la ola cubre el botón ---------- */
-.wave-btn:hover .wave-btn__wave,
-.wave-btn:focus-visible .wave-btn__wave {
-  top: auto;
-  left: auto;
-  bottom: -153px;
-  right: -53px;
-  width: calc(100% + 137px);
-  height: 307px;
+.neu-btn__label {
+  position: relative;
+  z-index: 1;
+  white-space: pre;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
+  color: rgb(2, 6, 23);
+  -webkit-user-select: none;
+  user-select: none;
 }
 
-.wave-btn:hover .wave-btn__label,
-.wave-btn:focus-visible .wave-btn__label { color: var(--white); }
-
-.wave-btn:hover .wave-btn__arrow,
-.wave-btn:focus-visible .wave-btn__arrow { color: var(--white); }
-
-/* La flecha se desliza: justify-content flex-start */
-.wave-btn:hover .wave-btn__icon,
-.wave-btn:focus-visible .wave-btn__icon {
-  justify-content: flex-start;
-  transform: translateX(-2px);
+/* ---------- HOVER: se eleva 4px y cambia el fondo (sin luz) ---------- */
+.neu-btn:hover,
+.neu-btn:focus-visible {
+  transform: translateY(-4px);
+  background: linear-gradient(160deg, rgb(255, 255, 255) 0%, rgb(226, 232, 240) 100%);
+  box-shadow: none;
 }
 
-.wave-btn:hover {
-  box-shadow: 0 22px 48px -18px rgba(46, 52, 42, 0.6);
+.neu-btn:hover::after,
+.neu-btn:focus-visible::after {
+  border-color: rgba(255, 255, 255, 0.65);
 }
 
-/* ---------- PRESSED: todo escala 0.95 ---------- */
-.wave-btn:active { transform: scale(0.95); }
-.wave-btn:active .wave-btn__label,
-.wave-btn:active .wave-btn__icon { transform: scale(0.95); }
-
-/* ---------- Variante outline (sobre el video) ---------- */
-.wave-btn--outline {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.42);
-  color: var(--white);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+/* ---------- PRESIONADO: baja un poco (y: -2 equivalente) ---------- */
+.neu-btn:active {
+  transform: translateY(-1px);
+  transition-duration: 0.2s;
 }
 
-.wave-btn--outline .wave-btn__wave { background-color: var(--white); }
-
-.wave-btn--outline:hover {
-  color: var(--green-deep);
-  border-color: var(--white);
-}
-.wave-btn--outline:hover .wave-btn__label,
-.wave-btn--outline:hover .wave-btn__arrow { color: var(--green-deep); }
-
-.wave-btn:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.75);
-  outline-offset: 3px;
+.neu-btn:focus-visible {
+  outline: none;
 }
 
-/* Tamaño grande para el hero */
-.hero__actions .wave-btn { padding: 16px 30px; border-radius: 28px; }
-.hero__actions .wave-btn__label { font-size: 16px; }
-
-/* Tamaño compacto para el header */
-.wave-btn--sm {
-  padding: 10px 20px;
-  border-radius: 999px;
-  gap: 9px;
+/* Tamaño del header (versión compacta) */
+.neu-btn--sm {
+  padding: 10px 18px;
+  border-radius: 16px;
+  gap: 6px;
 }
-.wave-btn--sm .wave-btn__label { font-size: 14px; }
+.neu-btn--sm .neu-btn__label { font-size: 14px; }
+
+/* Ocupa todo el ancho disponible (menú móvil y envío del formulario) */
+.neu-btn--full {
+  width: 100%;
+  padding: 14px 26px;
+}
 
 /* ============================================================
    MENU TOGGLE
@@ -637,7 +585,8 @@ body.menu-open { overflow: hidden; }
    HERO (stub — secciones siguientes)
    ============================================================ */
 .hero {
-  min-height: calc(100vh - var(--header-h));
+  /* Hero a pantalla completa: ocupa todo el alto visible. */
+  min-height: 100vh;
   display: flex;
   align-items: center;
   background: var(--green-deep); /* fallback mientras no hay video */
@@ -646,31 +595,32 @@ body.menu-open { overflow: hidden; }
 }
 
 /* ---- Video de fondo ----
-   Desplazado a la derecha para que su contenido no quede bajo el texto.
-   La escala extra (+18%) garantiza que siga cubriendo el hero completo. */
+   Con el texto centrado el video va al centro; la escala (+10%)
+   garantiza que cubra el hero completo sin pixelar de más el 720p. */
 .hero__bg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 72% center;
-  transform: scale(1.18) translateX(6%);
-  transform-origin: center right;
+  object-position: center;
+  transform: scale(1.1);
+  transform-origin: center;
   z-index: 0;
 }
 
 /* Filtro de desenfoque por capas: se aplica un blur real al video,
-   y una máscara de degradado lo revela solo hacia la izquierda */
+   y una máscara de degradado lo revela hacia el centro */
 .hero__bg-blur {
   position: absolute;
   inset: 0;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  /* El blur vive solo bajo el texto: se desvanece antes de la zona nítida */
-  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 30%, rgba(0,0,0,0.85) 46%, rgba(0,0,0,0.4) 58%, transparent 72%);
-  mask-image: linear-gradient(90deg, #000 0%, #000 30%, rgba(0,0,0,0.85) 46%, rgba(0,0,0,0.4) 58%, transparent 72%);
+  /* El blur se concentra en los bordes y se desvanece hacia el centro,
+     donde vive el texto */
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,0.7) 20%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.7) 80%, #000 100%);
+  mask-image: linear-gradient(90deg, #000 0%, rgba(0,0,0,0.7) 20%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0.25) 60%, rgba(0,0,0,0.7) 80%, #000 100%);
 }
 
 .hero__bg-blur video {
@@ -679,56 +629,60 @@ body.menu-open { overflow: hidden; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 72% center;
-  transform: scale(1.18) translateX(6%);
-  transform-origin: center right;
+  object-position: center;
+  transform: scale(1.1);
+  transform-origin: center;
   filter: blur(26px) saturate(1.05);
   /* El blur difumina más allá de los bordes; el scale lo absorbe */
 }
 
-/* Velo lateral direccional — el video se ve nítido a la derecha,
-   se oscurece y difumina hacia la izquierda donde vive el texto */
+/* Velo uniforme + viñeta: legibilidad del texto centrado sin matar el video */
 .hero__scrim {
   position: absolute;
   inset: 0;
   z-index: 1;
   background:
-    /* 1. Oscurecido lateral: protege el texto sin matar el video */
-    linear-gradient(
-      100deg,
-      rgba(31, 36, 28, 0.86) 0%,
-      rgba(31, 36, 28, 0.72) 20%,
-      rgba(31, 36, 28, 0.42) 38%,
-      rgba(31, 36, 28, 0.10) 56%,
-      rgba(31, 36, 28, 0) 72%
+    /* 1. Overlay negro sutil — sube el contraste del H1 sin apagar el video.
+          Más denso en el centro, donde vive el texto, y más suave en los bordes. */
+    radial-gradient(
+      130% 110% at 50% 50%,
+      rgba(0, 0, 0, 0.38) 0%,
+      rgba(0, 0, 0, 0.3) 45%,
+      rgba(0, 0, 0, 0.16) 75%,
+      rgba(0, 0, 0, 0.08) 100%
     ),
-    /* 2. Anclaje inferior para el bloque de texto */
+    /* 2. Oscurecido parejo en todo el hero */
     linear-gradient(
       180deg,
-      transparent 0%,
-      transparent 50%,
-      rgba(25, 29, 22, 0.42) 100%
+      rgba(31, 36, 28, 0.45) 0%,
+      rgba(31, 36, 28, 0.35) 45%,
+      rgba(25, 29, 22, 0.55) 100%
+    ),
+    /* 3. Viñeta radial que reafirma el centro */
+    radial-gradient(
+      120% 100% at 50% 50%,
+      rgba(25, 29, 22, 0) 35%,
+      rgba(25, 29, 22, 0.32) 100%
     );
 }
 
 /* En pantallas estrechas el texto ocupa todo el ancho:
-   el velo pasa a ser horizontal parejo y el video vuelve al centro */
+   el velo se refuerza en vertical para asegurar la legibilidad */
 @media (max-width: 900px) {
   .hero__scrim {
     background:
-      linear-gradient(180deg, rgba(31, 36, 28, 0.55) 0%, rgba(31, 36, 28, 0.68) 40%, rgba(25, 29, 22, 0.92) 100%);
-  }
-
-  .hero__bg,
-  .hero__bg-blur video {
-    object-position: center;
-    transform: scale(1.1);
-    transform-origin: center;
+      radial-gradient(
+        140% 120% at 50% 50%,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(0, 0, 0, 0.3) 50%,
+        rgba(0, 0, 0, 0.14) 100%
+      ),
+      linear-gradient(180deg, rgba(31, 36, 28, 0.5) 0%, rgba(31, 36, 28, 0.42) 45%, rgba(25, 29, 22, 0.62) 100%);
   }
 
   .hero__bg-blur {
-    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 55%);
-    mask-image: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 55%);
+    -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.75) 100%);
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.75) 100%);
   }
 
   .hero__bg-blur video { filter: blur(32px); }
@@ -740,13 +694,13 @@ body.menu-open { overflow: hidden; }
 .hero__inner {
   position: relative;
   z-index: 2;
-  padding: 140px 0 80px;
-  min-height: calc(100vh - var(--header-h));
+  padding: 120px 0 80px;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  text-align: left;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .hero__eyebrow {
@@ -796,11 +750,12 @@ body.menu-open { overflow: hidden; }
 .hero__title {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: clamp(42px, 5.6vw, 84px);
+  font-size: clamp(46px, 7vw, 104px);
   line-height: 1;
   letter-spacing: -0.03em;
   color: var(--white);
   text-shadow: 0 2px 40px rgba(0, 0, 0, 0.35);
+  text-wrap: balance;
 }
 
 .hero__title em {
@@ -811,54 +766,411 @@ body.menu-open { overflow: hidden; }
 }
 
 .hero__lead {
-  max-width: 480px;
-  margin: 24px 0 0;
-  font-size: clamp(15px, 1.6vw, 18px);
-  line-height: 1.62;
-  color: rgba(255, 255, 255, 0.84);
+  max-width: 580px;
+  margin: 24px auto 0;
+  font-size: clamp(17px, 2vw, 22px);
+  font-weight: 400;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .hero__actions {
   margin-top: 38px;
   display: flex;
   gap: 14px;
-  justify-content: flex-start;
+  justify-content: center;
   flex-wrap: wrap;
 }
 
-/* El bloque de contenido no invade la zona nítida del video */
+/* Bloque de contenido centrado */
 .hero__content {
   position: relative;
-  max-width: min(560px, 42%);
+  max-width: 760px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding-left: 30px;
-}
-
-/* Línea de acento vertical — ancla editorial del bloque */
-.hero__content::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 8px;
-  bottom: 8px;
-  width: 1.5px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.55) 18%,
-    rgba(255, 255, 255, 0.55) 82%,
-    rgba(255, 255, 255, 0) 100%
-  );
+  align-items: center;
+  text-align: center;
 }
 
 /* Móviles: el texto ocupa el ancho completo */
 @media (max-width: 900px) {
   .hero__content {
     max-width: 100%;
-    padding-left: 20px;
   }
+}
+
+/* ============================================================
+   FORMULARIO LIQUID GLASS (reemplaza los botones del hero)
+   ============================================================ */
+
+/* --- Transición de salida de los botones (estilo Framer) --- */
+.hero__actions {
+  transform-origin: center;
+}
+
+.hero__actions.is-leaving {
+  animation: actions-out 0.5s var(--ease-in-out) forwards;
+  pointer-events: none;
+}
+
+@keyframes actions-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.96);
+    filter: blur(6px);
+  }
+}
+
+/* --- El formulario: estado base (oculto) --- */
+.glass-form {
+  position: relative;
+  width: min(660px, 100%);
+  margin-top: 0;
+  padding: 34px 34px 28px;
+  border-radius: 26px;
+
+  /* Liquid glass: capa translúcida + desenfoque del video detrás */
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+
+  /* Profundidad: sombra externa + luz interior superior */
+  box-shadow:
+    0 28px 70px -20px rgba(0, 0, 0, 0.55),
+    0 2px 0 0 rgba(255, 255, 255, 0.16) inset,
+    0 -18px 40px -24px rgba(0, 0, 0, 0.4) inset;
+
+  /* Colapso del layout mientras está oculto */
+  overflow: hidden;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  opacity: 0;
+  transform: translateY(26px) scale(0.94);
+  filter: blur(10px);
+  pointer-events: none;
+
+  transition:
+    max-height 0.75s var(--ease),
+    padding 0.75s var(--ease),
+    margin-top 0.75s var(--ease),
+    opacity 0.55s var(--ease),
+    transform 0.75s var(--ease),
+    filter 0.6s var(--ease);
+}
+
+/* --- Formulario abierto --- */
+.glass-form.is-open {
+  max-height: 900px;
+  padding-top: 34px;
+  padding-bottom: 28px;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  pointer-events: auto;
+  transition-delay: 0.06s;
+}
+
+/* Sin resplandor: el cristal se apoya solo en el desenfoque del fondo */
+.glass-form__glow { display: none; }
+
+/* Reflejo superior tipo cristal */
+.glass-form::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 46%;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.04) 40%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  opacity: 0.9;
+}
+
+/* --- Cabecera del formulario --- */
+.glass-form__head {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.glass-form__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 7px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.glass-form__dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #9be39b;
+  flex-shrink: 0;
+}
+
+.glass-form__dot-pulse {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid #9be39b;
+  animation: glass-pulse 2s var(--ease) infinite;
+}
+
+@keyframes glass-pulse {
+  0% { transform: scale(0.7); opacity: 0; }
+  40% { opacity: 0.9; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+.glass-form__title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(30px, 3.4vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.4);
+}
+
+.glass-form__sub {
+  max-width: 400px;
+  margin: 12px auto 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* --- Rejilla de campos --- */
+.glass-form__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field--full { grid-column: 1 / -1; }
+
+.field__label {
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  padding-left: 2px;
+}
+
+.field__label em {
+  font-style: normal;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  opacity: 0.6;
+}
+
+.field__input {
+  width: 100%;
+  padding: 14px 16px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  outline: none;
+  transition:
+    background 0.35s var(--ease),
+    border-color 0.35s var(--ease),
+    box-shadow 0.35s var(--ease);
+}
+
+.field__input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.field__input:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.field__input:focus {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.1),
+    0 8px 24px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Contador de acompañantes (stepper) --- */
+.stepper {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  padding: 5px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition:
+    background 0.35s var(--ease),
+    border-color 0.35s var(--ease),
+    box-shadow 0.35s var(--ease);
+}
+
+.stepper:focus-within {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.1),
+    0 8px 24px -12px rgba(0, 0, 0, 0.5);
+}
+
+.stepper__btn {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  transition:
+    background 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    transform 0.3s var(--ease-spring);
+}
+
+.stepper__btn svg { width: 12px; height: 12px; }
+
+.stepper__btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+.stepper__btn:active { transform: scale(0.9); }
+
+.stepper__btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* El input central: sin fondo propio, ocupa el espacio libre */
+.stepper__input {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  background: transparent;
+  border: none;
+  padding: 10px 4px;
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+}
+
+.stepper__input:hover,
+.stepper__input:focus {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Ocultar las flechas nativas del input numérico */
+.stepper__input::-webkit-outer-spin-button,
+.stepper__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Autocompletado del navegador: mantener el tema oscuro */
+.field__input:-webkit-autofill,
+.field__input:-webkit-autofill:hover,
+.field__input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--white);
+  -webkit-box-shadow: 0 0 0 1000px rgba(46, 52, 42, 0.9) inset;
+  transition: background-color 9999s ease-out;
+}
+
+/* --- Pie: enviar + volver --- */
+.glass-form__foot {
+  position: relative;
+  z-index: 1;
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.glass-form__cancel {
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.72);
+  padding: 6px 14px;
+  border-radius: var(--radius);
+  transition: color 0.3s var(--ease), background 0.3s var(--ease);
+}
+
+.glass-form__cancel:hover {
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* --- Entrada escalonada de los campos al abrir --- */
+.glass-form .field,
+.glass-form__head,
+.glass-form__foot {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s var(--ease), transform 0.6s var(--ease);
+}
+
+.glass-form.is-open .glass-form__head { opacity: 1; transform: none; transition-delay: 0.14s; }
+.glass-form.is-open .field:nth-child(1) { opacity: 1; transform: none; transition-delay: 0.2s; }
+.glass-form.is-open .field:nth-child(2) { opacity: 1; transform: none; transition-delay: 0.25s; }
+.glass-form.is-open .field:nth-child(3) { opacity: 1; transform: none; transition-delay: 0.3s; }
+.glass-form.is-open .field:nth-child(4) { opacity: 1; transform: none; transition-delay: 0.35s; }
+.glass-form.is-open .field:nth-child(5) { opacity: 1; transform: none; transition-delay: 0.4s; }
+.glass-form.is-open .glass-form__foot { opacity: 1; transform: none; transition-delay: 0.46s; }
+
+/* --- Formulario en pantallas estrechas: una sola columna --- */
+@media (max-width: 640px) {
+  .glass-form.is-open {
+    max-height: 1200px;
+    padding: 24px 20px 22px;
+    border-radius: 22px;
+  }
+  .glass-form__grid { grid-template-columns: 1fr; gap: 12px; }
+  .glass-form__title { font-size: clamp(26px, 7.5vw, 34px); }
+  .glass-form__sub { font-size: 13.5px; }
+  .glass-form__head { margin-bottom: 18px; }
 }
 
 /* ============================================================
@@ -875,7 +1187,7 @@ body.menu-open { overflow: hidden; }
 @media (max-width: 640px) {
   :root { --header-h: 76px; }
   .container { width: min(100% - 32px, var(--container)); }
-  .header__actions .wave-btn { display: none; }
+  .header__actions .neu-btn { display: none; }
   .brand__mark { width: 50px; height: 50px; }
   .brand__text strong { font-size: 18px; }
   .mobile-menu { inset: var(--header-h) 0 0 0; }
@@ -891,4 +1203,21 @@ body.menu-open { overflow: hidden; }
     transition-duration: 0.01ms !important;
   }
   html { scroll-behavior: auto; }
+
+  /* Excepción: la apertura del formulario es contenido, no adorno.
+     Se mantiene visible (más corta) para que el cambio no sea brusco. */
+  .glass-form,
+  .glass-form .field,
+  .glass-form__head,
+  .glass-form__foot,
+  .hero__actions {
+    transition-duration: 0.28s !important;
+  }
+
+  /* Los botones neumórficos también conservan su hover suave:
+     es feedback de interacción, no decoración. */
+  .neu-btn,
+  .neu-btn::after {
+    transition-duration: 0.35s !important;
+  }
 }
