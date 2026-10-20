@@ -136,6 +136,25 @@
     target.focus({ preventScroll: true });
   }
 
+  function returnToHero() {
+    const actionsRect = heroActions.getBoundingClientRect();
+    if (actionsRect.top >= 0 && actionsRect.bottom <= window.innerHeight) return Promise.resolve();
+    // Let visitors travel back from the programme before the glass morph starts.
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return new Promise(resolve => {
+      const started = performance.now();
+      function checkPosition() {
+        if (window.scrollY < 2) return resolve();
+        if (performance.now() - started > 1400) {
+          window.scrollTo({ top: 0, behavior: 'instant' });
+          return resolve();
+        }
+        requestAnimationFrame(checkPosition);
+      }
+      requestAnimationFrame(checkPosition);
+    });
+  }
+
   async function openRsvp(trigger) {
     if (rsvpState !== 'closed') {
       if (rsvpState === 'open') focusForm();
@@ -146,8 +165,7 @@
     returnTo = trigger;
     closeAfterOpening = false;
     if (menuButton.getAttribute('aria-expanded') === 'true') setMenu(false);
-    const actionsRect = heroActions.getBoundingClientRect();
-    if (actionsRect.top < 0 || actionsRect.bottom > window.innerHeight) heroActions.scrollIntoView({ block: 'center', behavior: 'instant' });
+    await returnToHero();
     hero.classList.add('has-rsvp-interaction');
     heroActions.inert = true;
     hero.classList.add('is-morphing');

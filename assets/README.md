@@ -1,4 +1,4 @@
-# Archivos del hero
+# Archivos del sitio
 
 - `fabric-loop.mp4`: animación de tela de 10 segundos creada con Kling 2.5 Turbo
   a través de ElevenLabs. Usa como referencia el fotograma de 8,5 segundos del
@@ -7,6 +7,9 @@
 - `fabric-poster.jpg`: imagen de respaldo y portada del video.
 - `tree-emblem.png`: emblema original de Árbol de Vida, optimizado para el header
   y el favicon.
+- `church-arbol-de-vida.png` y `church-shalom.png`: logos proporcionados por el
+  organizador para presentar a ambas iglesias en la sección del encuentro.
+  Se conservan los PNG transparentes originales.
 
 El video se reproduce con `autoplay`, `muted`, `loop` y `playsinline`. Se pausa
 cuando la pestaña está oculta. El video y las transiciones del formulario están
@@ -24,3 +27,10 @@ python3 -m http.server 8080 --bind 127.0.0.1
 
 El formulario valida los datos y muestra una revisión. Todavía no tiene un
 servicio de envío o almacenamiento de inscripciones conectado.
+
+La sección de los tres días adapta el patrón visual del componente
+Feature Showcase Native compartido por el organizador. Está implementada en
+HTML, CSS y JavaScript propios, sin cargar el runtime de Framer. En escritorio
+la imagen queda fija y cambia al recorrer los días; en móvil cada imagen
+acompaña su contenido y se mantiene una navegación compacta. Las fotografías
+son espacios provisionales, identificados como «Fotografía por confirmar».
