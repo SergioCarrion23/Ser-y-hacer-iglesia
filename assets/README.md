@@ -22,7 +22,10 @@
   reducido a 1200 × 1800 píxeles para la web.
 - `pastor-motion.js`: componente de movimiento compilado con Framer Motion.
   Incluye aparición al entrar en pantalla, movimiento con el desplazamiento
-  e inclinación sutil con el cursor. El contenido sigue visible sin JavaScript.
+  y profundidad con el cursor, el toque o el foco del teclado. La imagen, el
+  marco y el reflejo se mueven en capas; se conserva la fotografía original.
+  El efecto móvil acompaña el scroll sin pedir acceso a los sensores.
+  El contenido sigue visible sin JavaScript.
   Las licencias se conservan en `motion-licenses.txt`.
 
 El video se reproduce con `autoplay`, `muted`, `loop` y `playsinline`. Se pausa
@@ -60,6 +63,6 @@ Para modificar las animaciones, edita `pastor-motion.js` en la raíz, ejecuta
 `npm ci` y `npm run build`, y publica también los archivos compilados de `assets/`.
 GitHub Pages sirve el resultado ya compilado; no necesita ejecutar Node.
 
-Los botones y la etiqueta de fecha del hero usan superficies de vidrio
-translúcido. El desenfoque permanece fijo y el hover anima el reflejo y una
+El header flotante, el menú móvil, todos los botones y la etiqueta de fecha
+del hero comparten superficies de vidrio translúcido. El desenfoque permanece fijo y el hover anima el reflejo y una
 elevación pequeña, manteniendo el efecto de fusión del formulario.

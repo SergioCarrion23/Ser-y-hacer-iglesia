@@ -195,12 +195,14 @@ body.menu-open { overflow: hidden; }
 .pastor-portrait { position: relative; width: min(40%,380px); margin-inline: auto; perspective: 1200px; }
 .pastor-portrait__float { perspective: 1200px; }
 .pastor-card { position: relative; aspect-ratio: 3 / 4; border-radius: 22px; background: #2e382c; overflow: hidden; box-shadow: 0 24px 54px -22px #2d412f60,0 3px 9px #2d412f12; transform-style: preserve-3d; }
+.pastor-card__image { position: absolute; inset: -3%; overflow: hidden; border-radius: inherit; transform: translate3d(0,0,0) scale(1.025); }
 .pastor-card img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
 .pastor-card::after { content: ""; position: absolute; inset: 65% 0 0; background: linear-gradient(transparent,#101d1b9c); pointer-events: none; }
 .pastor-card figcaption { position: absolute; z-index: 1; bottom: 20px; left: 22px; right: 22px; display: flex; align-items: center; gap: 7px; text-align: left; color: #fff; font-size: 7px; line-height: 1.6; letter-spacing: 1px; }
 .pastor-card figcaption > span:last-child { margin-left: auto; opacity: .8; font-size: 7px; letter-spacing: .6px; }
 .pastor-card__dot { width: 5px; height: 5px; flex-shrink: 0; border-radius: 50%; background: #dce9c5; }
-.pastor-card__shine { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(125deg,#ffffff13,transparent 45%,#ffffff05); border: 1px solid #fff5; border-radius: inherit; }
+.pastor-card__reflection { position: absolute; inset: -40%; pointer-events: none; opacity: .1; background: radial-gradient(ellipse at 30% 20%,#fff9,transparent 60%); }
+.pastor-card__shine { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 30% 15%,#ffffff24,transparent 65%),linear-gradient(125deg,#ffffff12,transparent 45%,#ffffff05); border: 1px solid #fff5; border-radius: inherit; }
 .pastor-invitation { position: relative; max-width: 555px; margin: 23px auto 0; }
 .pastor-invitation__date { display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px; border: 1px solid #fff9; border-radius: 999px; background: linear-gradient(135deg,#ffffff66,#ffffff20); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: inset 0 1px 0 #ffffffe0,0 3px 12px #3d573108; font-size: 8px; letter-spacing: 1px; color: #637351; }
 .pastor-invitation__date > span { width: 4px; height: 4px; border-radius: 50%; background: #7b915d; }
@@ -430,4 +432,90 @@ body.menu-open { overflow: hidden; }
   .rsvp-panel h2 { font-size: 27px; }
   .party-options label > span { font-size: 9px; }
   .party-options svg { display: none; }
+}
+
+/* One glass material, tuned for light and dark surfaces. Blur stays static. */
+:root {
+  --glass-ink: #34452d;
+  --glass-fill: linear-gradient(135deg,#ffffffb0,#dce8ce50);
+  --glass-hover: linear-gradient(135deg,#ffffffd9,#dce8ce80);
+  --glass-edge: #ffffffc2;
+  --glass-shadow: #283d2621;
+  --glass-glow: #ffffffde;
+}
+.hero {
+  --glass-ink: #f8fff2;
+  --glass-fill: linear-gradient(135deg,#ffffff30,#edf9dd16);
+  --glass-hover: linear-gradient(135deg,#ffffff44,#edf9dd28);
+  --glass-edge: #f6ffeb66;
+  --glass-shadow: #0a1c1a2e;
+  --glass-glow: #ffffffb3;
+}
+.glass-control.glass-control {
+  position: relative; isolation: isolate; overflow: hidden;
+  border: 1px solid var(--glass-edge); border-radius: 999px;
+  color: var(--glass-ink); background: var(--glass-fill);
+  backdrop-filter: blur(16px) saturate(1.5); -webkit-backdrop-filter: blur(16px) saturate(1.5);
+  box-shadow: inset 0 1px 0 var(--glass-glow),inset 0 -1px 0 #ffffff1f,0 5px 18px var(--glass-shadow);
+  transition: transform .32s var(--ease),background .25s,border-color .25s,box-shadow .32s;
+  text-decoration: none;
+}
+.glass-control::after {
+  content: ""; position: absolute; pointer-events: none; z-index: -1;
+  width: 52%; height: 280%; top: -90%; left: -90%;
+  background: linear-gradient(90deg,transparent,#ffffff3b,transparent);
+  transform: rotate(22deg); transition: transform .65s var(--ease);
+}
+.glass-control .wave-btn__wave { display: none; }
+.glass-control.glass-control:focus-visible { outline: 2px solid var(--glass-ink); outline-offset: 4px; }
+@media (hover: hover) {
+  .glass-control.glass-control:hover:not(:disabled) {
+    transform: translateY(-2px); background: var(--glass-hover);
+    box-shadow: inset 0 1px 0 #ffffffe0,inset 0 -1px 0 #ffffff33,0 10px 25px var(--glass-shadow);
+  }
+  .glass-control:hover:not(:disabled)::after { transform: translateX(420%) rotate(22deg); }
+}
+.glass-control.glass-control:active:not(:disabled) { transform: scale(.97); }
+.glass-control.glass-control:disabled { opacity: .35; cursor: default; }
+.event-day__cta.glass-control { padding: 12px 20px; }
+.pastor-invitation__cta.glass-control { padding: 14px 24px; }
+.rsvp-return.glass-control { padding: 9px 18px; }
+.rsvp-submit.glass-control { border-radius: 14px; }
+.rsvp-close.glass-control { position: absolute; width: 36px; height: 36px; top: 12px; right: 14px; overflow: visible; }
+.rsvp-close.glass-control::before { content: none; }
+.rsvp-close.glass-control { box-shadow: inset 0 1px 0 #ffffff66,0 3px 10px #10251b20; }
+/* Keep its 44px touch target while the visible glass circle stays compact. */
+.rsvp-close.glass-control::after { display: block; inset: -4px; width: auto; height: auto; background: none; transform: none; pointer-events: auto; }
+.party-stepper .glass-control { border-radius: 10px; box-shadow: inset 0 1px 0 #ffffff38; }
+.party-options input:checked + span { background: var(--glass-fill); border-color: var(--glass-edge); box-shadow: inset 0 1px 0 #ffffff70,0 3px 10px #10251b1a; }
+
+/* Float the header over the moving fabric so its glass has real depth. */
+.site-header { position: absolute; top: 0; left: 0; right: 0; padding-top: 16px; background: none; border: 0; }
+.header__inner.container {
+  width: min(100% - 32px,1320px); height: calc(var(--header-h) - 16px); padding: 0 22px;
+  border: 1px solid #ffffff8c; border-radius: 999px;
+  background: linear-gradient(120deg,#f5f9efbf,#edf3e7a3 55%,#ffffff99);
+  backdrop-filter: blur(24px) saturate(1.5); -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  box-shadow: inset 0 1px 0 #ffffffe6,inset 0 -1px 0 #ffffff40,0 8px 32px #0d241820;
+}
+.nav__indicator { background: linear-gradient(135deg,#ffffff9c,#e2edd860); border-color: #ffffffa6; box-shadow: inset 0 1px 0 #fff,0 3px 10px #23351a0d; }
+.mobile-menu { inset: calc(var(--header-h) + 12px) 12px 12px; border: 1px solid #ffffffb3; border-radius: 28px; background: linear-gradient(145deg,#f6faeff2,#e5eddded); backdrop-filter: blur(24px) saturate(1.4); -webkit-backdrop-filter: blur(24px) saturate(1.4); box-shadow: inset 0 1px 0 #fff,0 18px 50px #11251930; }
+.hero, .hero__inner { min-height: 100svh; }
+.hero__inner { padding-top: calc(var(--header-h) + 52px); padding-bottom: 58px; }
+.hero.is-registering .hero__inner { min-height: 100svh; padding-top: calc(var(--header-h) + 24px); padding-bottom: 16px; }
+.pastor-card { outline-offset: 7px; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.pastor-card figcaption { transform: translate3d(0,0,18px); }
+@media (max-width: 700px) {
+  .site-header { padding-top: 12px; }
+  .header__inner.container { width: calc(100% - 24px); height: calc(var(--header-h) - 12px); padding-inline: 12px; gap: 8px; }
+  .header__inner .brand__mark { width: 36px; height: 36px; }
+  .header__inner .brand__text strong { font-size: 18px; }
+  .header__actions { gap: 8px; }
+  .hero__inner { min-height: max(630px,100svh); padding-top: calc(var(--header-h) + 46px); padding-bottom: 60px; }
+  .hero.is-registering .hero__inner { min-height: 100svh; padding-top: calc(var(--header-h) + 20px); padding-bottom: 12px; }
+  .mobile-menu { padding: 20px 23px; }
+  .mobile-menu__link { padding-block: 17px; }
+}
+@media (max-height: 740px) {
+  .hero.is-registering .hero__inner { padding-top: calc(var(--header-h) + 16px); padding-bottom: 8px; }
 }

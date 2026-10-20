@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" href="assets/tree-emblem.png" />
 
   <!-- Styles -->
-  <link rel="stylesheet" href="styles.css?v=20261020-pastor" />
+  <link rel="stylesheet" href="styles.css?v=20261020-spatial" />
 </head>
 <body>
   <a class="skip-link" href="#inicio">Saltar al contenido</a>
@@ -56,7 +56,7 @@
 
       <!-- Actions -->
       <div class="header__actions">
-        <button type="button" data-open-rsvp aria-controls="registro" aria-expanded="false" class="wave-btn wave-btn--sm">
+        <button type="button" data-open-rsvp aria-controls="registro" aria-expanded="false" class="wave-btn wave-btn--sm glass-control">
           <span class="wave-btn__label">Confirmar asistencia</span>
           <span class="wave-btn__icon" aria-hidden="true">
             <svg class="wave-btn__arrow" viewBox="0 0 15 14" fill="none">
@@ -66,7 +66,7 @@
           <span class="wave-btn__wave" aria-hidden="true"></span>
         </button>
 
-        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+        <button class="menu-toggle glass-control" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
           <span></span><span></span>
         </button>
       </div>
@@ -81,7 +81,7 @@
         <a href="#ubicacion" class="mobile-menu__link"><span>04</span> Ubicación</a>
         <a href="#faq" class="mobile-menu__link"><span>05</span> FAQ</a>
       </nav>
-      <button type="button" data-open-rsvp aria-controls="registro" aria-expanded="false" class="wave-btn btn--full mobile-menu__cta">
+      <button type="button" data-open-rsvp aria-controls="registro" aria-expanded="false" class="wave-btn btn--full mobile-menu__cta glass-control">
         <span class="wave-btn__label">Confirmar asistencia</span>
         <span class="wave-btn__wave" aria-hidden="true"></span>
       </button>
@@ -122,7 +122,7 @@
           <div class="rsvp-stage">
           <div class="hero__actions">
           <!-- Wave Reveal Button -->
-          <button type="button" data-open-rsvp aria-controls="registro" aria-expanded="false" class="wave-btn">
+          <button type="button" data-open-rsvp aria-controls="registro" aria-expanded="false" class="wave-btn glass-control">
             <span class="wave-btn__label">Confirmar asistencia</span>
             <span class="wave-btn__icon" aria-hidden="true">
               <!-- Flecha (se desliza a la izquierda en hover) -->
@@ -133,7 +133,7 @@
             <span class="wave-btn__wave" aria-hidden="true"></span>
           </button>
 
-          <a href="#ponentes" class="wave-btn wave-btn--outline">
+          <a href="#ponentes" class="wave-btn wave-btn--outline glass-control">
             <span class="wave-btn__label">Conocer al conferencista</span>
             <span class="wave-btn__icon" aria-hidden="true">
               <svg class="wave-btn__arrow" viewBox="0 0 15 14" fill="none">
@@ -148,7 +148,7 @@
             <div class="rsvp-panel__content">
               <div class="rsvp-topline">
                 <span class="rsvp-kicker"><span class="rsvp-spark" aria-hidden="true">✧</span> SER Y HACER IGLESIA</span>
-                <button type="button" class="rsvp-close" data-close-rsvp aria-label="Cerrar formulario y volver al inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17" /></svg></button>
+                <button type="button" class="rsvp-close glass-control" data-close-rsvp aria-label="Cerrar formulario y volver al inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17" /></svg></button>
               </div>
               <div class="rsvp-edit">
                 <h2 id="rsvp-title" tabindex="-1">Nos encantará <em>verte.</em></h2>
@@ -183,15 +183,15 @@
                       <div class="companion-count-row">
                         <div><label for="rsvp-count">¿Cuántas personas más?</label><p>Sin contarte a ti.</p></div>
                         <div class="party-stepper">
-                          <button type="button" data-count-step="-1" aria-label="Quitar un acompañante" disabled>−</button>
+                          <button type="button" data-count-step="-1" aria-label="Quitar un acompañante" disabled class="glass-control">−</button>
                           <input id="rsvp-count" name="companionCount" type="number" min="1" step="1" value="1" inputmode="numeric" aria-describedby="count-error" disabled />
-                          <button type="button" data-count-step="1" aria-label="Añadir un acompañante" disabled>+</button>
+                          <button type="button" data-count-step="1" aria-label="Añadir un acompañante" disabled class="glass-control">+</button>
                         </div>
                       </div>
                       <p class="field-error" id="count-error" hidden></p>
                     </div>
                   </div>
-                  <button class="rsvp-submit" type="submit" disabled><span>Revisar mi asistencia</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" /></svg></button>
+                  <button class="rsvp-submit glass-control" type="submit" disabled><span>Revisar mi asistencia</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" /></svg></button>
                 </form>
               </div>
               <div class="rsvp-review" hidden aria-labelledby="review-title">
@@ -199,8 +199,8 @@
                 <p class="rsvp-subtitle">Revisa los datos de tu invitación.</p>
                 <dl class="review-details"><div><dt>Nombre</dt><dd data-review="name"></dd></div><div><dt>Correo</dt><dd data-review="email"></dd></div><div><dt>Teléfono</dt><dd data-review="phone"></dd></div><div><dt>Asistencia</dt><dd data-review="party"></dd></div></dl>
                 <div class="preview-notice"><span>VISTA PREVIA</span><p>El envío aún no está habilitado.<br />Tu asistencia todavía no se ha registrado.</p></div>
-                <button class="rsvp-submit" type="button" data-edit-rsvp><span>Editar mis datos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m6-6-6 6 6 6" /></svg></button>
-                <button class="rsvp-return" type="button" data-close-rsvp>Volver al inicio</button>
+                <button class="rsvp-submit glass-control" type="button" data-edit-rsvp><span>Editar mis datos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m6-6-6 6 6 6" /></svg></button>
+                <button class="rsvp-return glass-control" type="button" data-close-rsvp>Volver al inicio</button>
               </div>
             </div>
           </div>
@@ -272,7 +272,7 @@
                 <h3 id="friday-title">Tu lugar también<br />está <em>aquí.</em></h3>
                 <p class="event-day__description">Ser iglesia empieza por sentirte parte. Una charla para jóvenes que quieren descubrir cómo involucrarse y aportar a la iglesia a la que asisten.</p>
                 <p class="event-day__thought">Tu presencia cuenta. Lo que tienes para dar, también.</p>
-                <button type="button" class="event-day__cta" data-open-rsvp aria-controls="registro" aria-expanded="false">Quiero ser parte <span aria-hidden="true">↗</span></button>
+                <button type="button" class="event-day__cta glass-control" data-open-rsvp aria-controls="registro" aria-expanded="false">Quiero ser parte <span aria-hidden="true">↗</span></button>
               </div>
             </article>
 
@@ -287,7 +287,7 @@
                 <h3 id="saturday-title">La iglesia va<br /><em>más allá.</em></h3>
                 <p class="event-day__description">Un encuentro para reflexionar sobre la labor de la iglesia en la comunidad. Cómo servir, acompañar y llevar nuestra fe más allá de las paredes del templo.</p>
                 <p class="event-day__thought">Distintas congregaciones. Un llamado a servir.</p>
-                <button type="button" class="event-day__cta" data-open-rsvp aria-controls="registro" aria-expanded="false">Quiero participar <span aria-hidden="true">↗</span></button>
+                <button type="button" class="event-day__cta glass-control" data-open-rsvp aria-controls="registro" aria-expanded="false">Quiero participar <span aria-hidden="true">↗</span></button>
               </div>
             </article>
 
@@ -302,7 +302,7 @@
                 <h3 id="sunday-title">Una palabra para<br /><em>crecer juntos.</em></h3>
                 <p class="event-day__description">El pastor <strong>Roy Soto</strong> compartirá la Palabra con nuestra congregación. Un domingo para reunirnos como Comunidad Cristiana Árbol de Vida y recibir su mensaje.</p>
                 <p class="event-day__thought">Nos encontramos en casa. Nos encontramos en Él.</p>
-                <button type="button" class="event-day__cta" data-open-rsvp aria-controls="registro" aria-expanded="false">Nos vemos el domingo <span aria-hidden="true">↗</span></button>
+                <button type="button" class="event-day__cta glass-control" data-open-rsvp aria-controls="registro" aria-expanded="false">Nos vemos el domingo <span aria-hidden="true">↗</span></button>
               </div>
             </article>
           </div>
@@ -324,9 +324,12 @@
           <p class="pastor-stage__note pastor-stage__note--right" aria-hidden="true">La comunidad<br /><em>nos acerca.</em></p>
           <div class="pastor-portrait" data-pastor-reveal>
             <div class="pastor-portrait__float">
-              <figure class="pastor-card">
-                <img src="assets/pastor-roy-soto.jpg" alt="Pastor Roy Soto en el interior de una iglesia" width="1200" height="1800" loading="lazy" decoding="async" />
+              <figure class="pastor-card" tabindex="0" aria-label="Retrato interactivo del pastor Roy Soto">
+                <div class="pastor-card__image">
+                  <img src="assets/pastor-roy-soto.jpg" draggable="false" alt="Pastor Roy Soto en el interior de una iglesia" width="1200" height="1800" loading="lazy" decoding="async" />
+                </div>
                 <figcaption><span class="pastor-card__dot"></span> INVITADO ESPECIAL <span>DOMINGO 15 NOV</span></figcaption>
+                <div class="pastor-card__reflection" aria-hidden="true"></div>
                 <div class="pastor-card__shine" aria-hidden="true"></div>
               </figure>
             </div>
@@ -337,7 +340,7 @@
           <p class="pastor-invitation__date"><span></span> DOMINGO 15 DE NOVIEMBRE</p>
           <h3>Un momento para escuchar.<br /><em>Una palabra para vivir.</em></h3>
           <p class="pastor-invitation__copy">El pastor Roy Soto nos acompañará para compartir la Palabra con la Comunidad Cristiana Árbol de Vida. Una invitación a reunirnos, fortalecer nuestra fe y crecer juntos.</p>
-          <button type="button" class="pastor-invitation__cta" data-open-rsvp aria-controls="registro" aria-expanded="false">Quiero acompañarlos <span aria-hidden="true">↗</span></button>
+          <button type="button" class="pastor-invitation__cta glass-control" data-open-rsvp aria-controls="registro" aria-expanded="false">Quiero acompañarlos <span aria-hidden="true">↗</span></button>
           <p class="pastor-invitation__host">Nos encontramos en Árbol de Vida.</p>
         </div>
         <div class="pastor-feature__footer"><span>SER Y HACER IGLESIA</span><span>UNA MISMA FE. UN MISMO PROPÓSITO.</span></div>
@@ -347,6 +350,6 @@
 
   <script src="script.js?v=20261020-evento"></script>
   <script src="event-showcase.js?v=20261020-evento"></script>
-  <script src="assets/pastor-motion.js?v=20261020-pastor" defer></script>
+  <script src="assets/pastor-motion.js?v=20261020-spatial" defer></script>
 </body>
 </html>
