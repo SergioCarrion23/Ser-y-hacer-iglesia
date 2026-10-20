@@ -1,11 +1,10 @@
 # Archivos del hero
 
-- `hero-background.mp4`: video de 5,5 segundos proporcionado por el organizador.
-  Conserva la imagen y la duración originales, sin recodificar el video.
-  Se eliminó la pista de audio y se preparó el MP4 para comenzar a cargar antes
-  de completar la descarga.
-  [Archivo de origen](https://res.cloudinary.com/dlsw7vg31/video/upload/v1792469614/Crear_video_corporativo_con_logo_20261019231043_k2koop.mp4).
-- `hero-poster.jpg`: primer fotograma del video, como imagen de respaldo.
+- `fabric-loop.mp4`: animación de tela de 10 segundos creada con Kling 2.5 Turbo
+  a través de ElevenLabs. Usa como referencia el fotograma de 8,5 segundos del
+  video proporcionado por el organizador, con el mismo fotograma de entrada y
+  salida. El archivo publicado está optimizado para la web, en 1080p y sin audio.
+- `fabric-poster.jpg`: imagen de respaldo y portada del video.
 - `tree-emblem.png`: emblema original de Árbol de Vida, optimizado para el header
   y el favicon.
 
