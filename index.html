@@ -19,51 +19,30 @@
   <!-- ============================= HEADER ============================= -->
   <header class="site-header" id="header">
 
-    <!-- Top bar -->
-    <div class="topbar">
-      <div class="topbar__track" aria-hidden="true">
-        <span class="topbar__item">13 &ndash; 15 de noviembre</span>
-        <span class="topbar__dot">&bull;</span>
-        <span class="topbar__item">3 días de encuentro</span>
-        <span class="topbar__dot">&bull;</span>
-        <span class="topbar__item">Ser y Hacer Iglesia</span>
-        <span class="topbar__dot">&bull;</span>
-        <span class="topbar__item">Cupos limitados</span>
-        <span class="topbar__dot">&bull;</span>
-        <span class="topbar__item">13 &ndash; 15 de noviembre</span>
-        <span class="topbar__dot">&bull;</span>
-        <span class="topbar__item">3 días de encuentro</span>
-        <span class="topbar__dot">&bull;</span>
-        <span class="topbar__item">Ser y Hacer Iglesia</span>
-        <span class="topbar__dot">&bull;</span>
-        <span class="topbar__item">Cupos limitados</span>
-        <span class="topbar__dot">&bull;</span>
-      </div>
-    </div>
-
     <!-- Main bar -->
     <div class="header__inner container">
 
       <!-- Brand -->
-      <a href="#inicio" class="brand" aria-label="Ser y Hacer Iglesia — Inicio">
+      <a href="#inicio" class="brand" aria-label="Árbol De Vida — Inicio">
         <span class="brand__mark" aria-hidden="true">
-          <svg viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="1" y="1" width="42" height="42" rx="13" stroke="currentColor" stroke-width="1.6"/>
-            <path d="M22 11v22M14.5 17.5h15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-            <path d="M13 30.5c3.2-2.4 6-3.6 9-3.6s5.8 1.2 9 3.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-          </svg>
+          <img
+            src="https://res.cloudinary.com/dlsw7vg31/image/upload/v1792469479/copy_of_embossed_dark_green_tree_emblem_h1lb12.png"
+            alt=""
+            width="64"
+            height="64"
+            loading="eager"
+          />
         </span>
         <span class="brand__text">
-          <strong>Ser y Hacer</strong>
-          <span>Iglesia</span>
+          <strong>Árbol De Vida</strong>
         </span>
       </a>
 
       <!-- Navigation -->
       <nav class="nav" id="nav" aria-label="Principal">
         <ul class="nav__list">
-          <li class="nav__item"><a class="nav__link" href="#evento"><span>El evento</span></a></li>
-          <li class="nav__item"><a class="nav__link" href="#ponentes"><span>Ponentes</span></a></li>
+          <li class="nav__item"><a class="nav__link" href="#evento"><span>Evento</span></a></li>
+          <li class="nav__item"><a class="nav__link" href="#ponentes"><span>Ponente</span></a></li>
           <li class="nav__item"><a class="nav__link" href="#programa"><span>Programa</span></a></li>
           <li class="nav__item"><a class="nav__link" href="#ubicacion"><span>Ubicación</span></a></li>
           <li class="nav__item"><a class="nav__link" href="#faq"><span>FAQ</span></a></li>
@@ -73,18 +52,8 @@
 
       <!-- Actions -->
       <div class="header__actions">
-        <span class="date-pill" aria-hidden="true">
-          <span class="date-pill__pulse"></span>
-          13&ndash;15 Nov
-        </span>
-
-        <a href="#registro" class="btn btn--solid magnetic" data-magnetic>
-          <span class="btn__label">Confirmar asistencia</span>
-          <span class="btn__arrow" aria-hidden="true">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M2 7h9M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </span>
+        <a href="#registro" class="neu-btn neu-btn--sm" id="openFormHeader">
+          <span class="neu-btn__label">Confirmar asistencia</span>
         </a>
 
         <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
@@ -96,14 +65,14 @@
     <!-- Mobile menu -->
     <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
       <nav class="mobile-menu__nav" aria-label="Menú móvil">
-        <a href="#evento" class="mobile-menu__link"><span>01</span> El evento</a>
-        <a href="#ponentes" class="mobile-menu__link"><span>02</span> Ponentes</a>
+        <a href="#evento" class="mobile-menu__link"><span>01</span> Evento</a>
+        <a href="#ponentes" class="mobile-menu__link"><span>02</span> Ponente</a>
         <a href="#programa" class="mobile-menu__link"><span>03</span> Programa</a>
         <a href="#ubicacion" class="mobile-menu__link"><span>04</span> Ubicación</a>
         <a href="#faq" class="mobile-menu__link"><span>05</span> FAQ</a>
       </nav>
-      <a href="#registro" class="btn btn--solid btn--full mobile-menu__cta">
-        <span class="btn__label">Confirmar asistencia</span>
+      <a href="#registro" class="neu-btn neu-btn--full mobile-menu__cta">
+        <span class="neu-btn__label">Confirmar asistencia</span>
       </a>
       <p class="mobile-menu__date">13 &ndash; 15 de noviembre · Cupos limitados</p>
     </div>
@@ -113,26 +82,159 @@
   <!-- ============================= HERO (stub) ============================= -->
   <main id="inicio">
     <section class="hero">
-      <!-- Fondo: copia tu video como assets/hero.mp4 -->
-      <video class="hero__bg" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.jpg">
-        <source src="assets/hero.mp4" type="video/mp4" />
-      </video>
+      <!-- Capa 1: video con blur, enmascarado solo hacia la izquierda -->
+      <div class="hero__bg-blur" aria-hidden="true">
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="auto"
+          src="https://res.cloudinary.com/dlsw7vg31/video/upload/v1792469614/Crear_video_corporativo_con_logo_20261019231043_k2koop.mp4"
+        ></video>
+      </div>
+
+      <!-- Capa 2: video nítido, desplazado a la derecha -->
+      <video
+        class="hero__bg"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        src="https://res.cloudinary.com/dlsw7vg31/video/upload/v1792469614/Crear_video_corporativo_con_logo_20261019231043_k2koop.mp4"
+      ></video>
+
       <div class="hero__scrim" aria-hidden="true"></div>
 
       <div class="container hero__inner">
-        <p class="hero__eyebrow">
-          <span class="date-pill__pulse" style="background:#fff"></span>
-          Encuentro · 13 &ndash; 15 de noviembre
-        </p>
-        <h1 class="hero__title">Ser y Hacer <em>Iglesia</em></h1>
-        <p class="hero__lead">Tres días para volver a lo esencial: la presencia, la palabra y la comunidad.</p>
-        <div class="hero__actions">
-          <a href="#registro" class="btn btn--light btn--lg magnetic" data-magnetic>
-            <span class="btn__label">Confirmar asistencia</span>
+        <div class="hero__content">
+          <p class="hero__eyebrow">
+            <span class="hero__dot"></span>
+            Evento · 13 &ndash; 15 de noviembre
+          </p>
+          <h1 class="hero__title">Ser y Hacer <em>Iglesia</em></h1>
+          <p class="hero__lead">Tres días para volver a lo esencial: la presencia, la palabra y la comunidad.</p>
+          <div class="hero__actions" id="heroActions">
+          <!-- Wave Reveal Button -->
+          <a href="#registro" class="neu-btn" id="openForm" aria-controls="registroForm" aria-expanded="false">
+            <span class="neu-btn__label">Confirmar asistencia</span>
           </a>
-          <a href="#programa" class="btn btn--ghost btn--lg" style="--btn-fill: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.4); color:#fff;">
-            <span class="btn__label">Ver programa</span>
+
+          <a href="#ponentes" class="neu-btn">
+            <span class="neu-btn__label">Conocer al ponente</span>
           </a>
+          </div>
+
+          <!-- ====== FORMULARIO LIQUID GLASS (oculto hasta confirmar) ====== -->
+          <form
+            class="glass-form"
+            id="registroForm"
+            data-open="false"
+            novalidate
+            aria-hidden="true"
+          >
+            <!-- Brillo que sigue al cursor -->
+            <span class="glass-form__glow" aria-hidden="true"></span>
+
+            <div class="glass-form__head">
+              <p class="glass-form__eyebrow">
+                <span class="glass-form__dot">
+                  <span class="glass-form__dot-pulse"></span>
+                </span>
+                Cupos limitados
+              </p>
+              <h2 class="glass-form__title">Confirma tu asistencia</h2>
+              <p class="glass-form__sub">Completa tus datos y guarda tu lugar en el encuentro.</p>
+            </div>
+
+            <div class="glass-form__grid">
+              <label class="field">
+                <span class="field__label">Nombre completo</span>
+                <input
+                  class="field__input"
+                  type="text"
+                  name="nombre"
+                  autocomplete="name"
+                  placeholder="Tu nombre"
+                  required
+                />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Correo electrónico</span>
+                <input
+                  class="field__input"
+                  type="email"
+                  name="email"
+                  autocomplete="email"
+                  placeholder="tucorreo@ejemplo.com"
+                  required
+                />
+              </label>
+
+              <label class="field">
+                <span class="field__label">Teléfono</span>
+                <input
+                  class="field__input"
+                  type="tel"
+                  name="telefono"
+                  autocomplete="tel"
+                  placeholder="+57 300 000 0000"
+                  required
+                />
+              </label>
+
+              <div class="field">
+                <span class="field__label">¿Cuántas personas te acompañan?</span>
+                <div class="stepper">
+                  <button
+                    type="button"
+                    class="stepper__btn"
+                    data-step="-1"
+                    aria-label="Quitar un acompañante"
+                  >
+                    <svg viewBox="0 0 12 12" aria-hidden="true">
+                      <path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  </button>
+                  <input
+                    class="field__input stepper__input"
+                    type="number"
+                    name="acompanantes"
+                    inputmode="numeric"
+                    min="0"
+                    max="20"
+                    step="1"
+                    value="0"
+                    aria-label="Número de acompañantes"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="stepper__btn"
+                    data-step="1"
+                    aria-label="Añadir un acompañante"
+                  >
+                    <svg viewBox="0 0 12 12" aria-hidden="true">
+                      <path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="glass-form__foot">
+              <button type="submit" class="neu-btn neu-btn--full">
+                <span class="neu-btn__label">Enviar confirmación</span>
+              </button>
+
+              <button type="button" class="glass-form__cancel" id="closeForm">
+                Volver
+              </button>
+            </div>
+          </form>
+
         </div>
       </div>
     </section>
