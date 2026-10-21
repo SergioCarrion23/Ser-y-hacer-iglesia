@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" href="assets/tree-emblem.png" />
 
   <!-- Styles -->
-  <link rel="stylesheet" href="styles.css?v=20261021-footer" />
+  <link rel="stylesheet" href="styles.css?v=20261021-registro-20261021-footer" />
 </head>
 <body>
   <a class="skip-link" href="#inicio">Saltar al contenido</a>
@@ -150,56 +150,13 @@
                 <span class="rsvp-kicker"><span class="rsvp-spark" aria-hidden="true">✧</span> SER Y HACER IGLESIA</span>
                 <button type="button" class="rsvp-close glass-control" data-close-rsvp aria-label="Cerrar formulario y volver al inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17" /></svg></button>
               </div>
-              <div class="rsvp-edit">
+              <div class="rsvp-live">
                 <h2 id="rsvp-title" tabindex="-1">Nos encantará <em>verte.</em></h2>
-                <p class="rsvp-subtitle">13–15 de noviembre · Árbol de Vida</p>
-                <form id="rsvp-form" novalidate>
-                  <div class="rsvp-field">
-                    <label for="rsvp-name">Nombre completo</label>
-                    <input id="rsvp-name" name="name" type="text" autocomplete="name" placeholder="¿Cómo te llamas?" maxlength="100" required aria-describedby="name-error" />
-                    <p class="field-error" id="name-error" hidden></p>
-                  </div>
-                  <div class="rsvp-contact-row">
-                    <div class="rsvp-field">
-                      <label for="rsvp-email">Correo electrónico</label>
-                      <input id="rsvp-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="tu@correo.com" maxlength="254" required aria-describedby="email-error" />
-                      <p class="field-error" id="email-error" hidden></p>
-                    </div>
-                    <div class="rsvp-field">
-                      <label for="rsvp-phone">Número de teléfono</label>
-                      <input id="rsvp-phone" name="phone" type="tel" autocomplete="tel-national" inputmode="tel" placeholder="Ej. 099 123 4567" maxlength="20" required aria-describedby="phone-error" />
-                      <p class="field-error" id="phone-error" hidden></p>
-                    </div>
-                  </div>
-                  <fieldset class="rsvp-party">
-                    <legend>¿Alguien te acompañará?</legend>
-                    <div class="party-options">
-                      <label><input type="radio" name="accompanied" value="no" checked /><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="3" /><path d="M6 21v-3a6 6 0 0 1 12 0v3" /></svg>Voy solo/a</span></label>
-                      <label><input type="radio" name="accompanied" value="yes" /><span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="7" r="3" /><path d="M3 21v-3a6 6 0 0 1 12 0v3m2-17a3 3 0 0 1 0 6m1 4a5 5 0 0 1 3 5v2" /></svg>Voy acompañado/a</span></label>
-                    </div>
-                  </fieldset>
-                  <div class="companion-details" aria-hidden="true" inert>
-                    <div class="companion-details__inner">
-                      <div class="companion-count-row">
-                        <div><label for="rsvp-count">¿Cuántas personas más?</label><p>Sin contarte a ti.</p></div>
-                        <div class="party-stepper">
-                          <button type="button" data-count-step="-1" aria-label="Quitar un acompañante" disabled class="glass-control">−</button>
-                          <input id="rsvp-count" name="companionCount" type="number" min="1" step="1" value="1" inputmode="numeric" aria-describedby="count-error" disabled />
-                          <button type="button" data-count-step="1" aria-label="Añadir un acompañante" disabled class="glass-control">+</button>
-                        </div>
-                      </div>
-                      <p class="field-error" id="count-error" hidden></p>
-                    </div>
-                  </div>
-                  <button class="rsvp-submit glass-control" type="submit" disabled><span>Revisar mi asistencia</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" /></svg></button>
-                </form>
-              </div>
-              <div class="rsvp-review" hidden aria-labelledby="review-title">
-                <h2 id="review-title" tabindex="-1">Todo en <em>su lugar.</em></h2>
-                <p class="rsvp-subtitle">Revisa los datos de tu invitación.</p>
-                <dl class="review-details"><div><dt>Nombre</dt><dd data-review="name"></dd></div><div><dt>Correo</dt><dd data-review="email"></dd></div><div><dt>Teléfono</dt><dd data-review="phone"></dd></div><div><dt>Asistencia</dt><dd data-review="party"></dd></div></dl>
-                <div class="preview-notice"><span>VISTA PREVIA</span><p>El envío aún no está habilitado.<br />Tu asistencia todavía no se ha registrado.</p></div>
-                <button class="rsvp-submit glass-control" type="button" data-edit-rsvp><span>Editar mis datos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H4m6-6-6 6 6 6" /></svg></button>
+                <p class="rsvp-subtitle">13–15 de noviembre · Entrada libre y gratuita</p>
+                <p class="rsvp-privacy">Completa el formulario y pulsa Enviar. Google Forms confirmará cuando tu inscripción se haya guardado. Tus respuestas son privadas y se comparten con Sergio para organizar el encuentro.</p>
+                <a class="rsvp-form-link" href="https://docs.google.com/forms/d/e/1FAIpQLSclJbNRoE9u9kvbbC5k9KMn5yLcHcZL_zBqp3AjL4Bj7klYQQ/viewform" target="_blank" rel="noopener noreferrer">Abrir formulario en otra pestaña <span aria-hidden="true">↗</span></a>
+                <iframe class="rsvp-embed" title="Inscripción a Ser y Hacer Iglesia" src="https://docs.google.com/forms/d/e/1FAIpQLSclJbNRoE9u9kvbbC5k9KMn5yLcHcZL_zBqp3AjL4Bj7klYQQ/viewform?embedded=true&amp;hl=es" loading="lazy">Cargando formulario…</iframe>
+                <p class="rsvp-privacy">Si no carga o no ves la confirmación, abre el formulario en otra pestaña para completar el envío.</p>
                 <button class="rsvp-return glass-control" type="button" data-close-rsvp>Volver al inicio</button>
               </div>
             </div>
@@ -382,11 +339,11 @@
         </header>
         <div class="questions-list">
           <details class="question" open><summary><span class="question__number" aria-hidden="true">01</span><span>¿Tiene algún costo asistir?</span><span class="question__icon" aria-hidden="true"></span></summary><div class="question__answer"><p>No. La entrada a los eventos de Ser y Hacer Iglesia es libre y gratuita.</p></div></details>
-          <details class="question"><summary><span class="question__number" aria-hidden="true">02</span><span>¿Puedo ir con alguien más?</span><span class="question__icon" aria-hidden="true"></span></summary><div class="question__answer"><p>Sí, puedes venir acompañado. El formulario contempla la opción de indicar cuántas personas te acompañarán. Por ahora, solo permite revisar los datos; todavía no registra la asistencia.</p></div></details>
+          <details class="question"><summary><span class="question__number" aria-hidden="true">02</span><span>¿Puedo ir con alguien más?</span><span class="question__icon" aria-hidden="true"></span></summary><div class="question__answer"><p>Sí, puedes venir acompañado. El formulario contempla la opción de indicar cuántas personas te acompañarán. Completa la inscripción y espera el mensaje de confirmación del formulario.</p></div></details>
           <details class="question"><summary><span class="question__number" aria-hidden="true">03</span><span>¿Quiénes estarán en el encuentro?</span><span class="question__icon" aria-hidden="true"></span></summary><div class="question__answer"><p>Es un encuentro de Comunidad Cristiana Árbol de Vida y Comunidad Cristiana Shalom. El domingo 15 de noviembre, el pastor Roy Soto compartirá la Palabra con la congregación de Árbol de Vida.</p><a href="#ponentes">Conocer al pastor Roy Soto <span aria-hidden="true">↗</span></a></div></details>
           <details class="question"><summary><span class="question__number" aria-hidden="true">04</span><span>¿Cuánto dura cada actividad?</span><span class="question__icon" aria-hidden="true"></span></summary><div class="question__answer"><p>El encuentro se desarrolla del 13 al 15 de noviembre. Los horarios de inicio y la duración de cada actividad todavía están por confirmar.</p><a href="#programa">Ver el programa por día <span aria-hidden="true">↗</span></a></div></details>
           <details class="question"><summary><span class="question__number" aria-hidden="true">05</span><span>¿Habrá comida?</span><span class="question__icon" aria-hidden="true"></span></summary><div class="question__answer"><p>La disponibilidad de comida y bebidas aún no está confirmada.</p></div></details>
-          <details class="question"><summary><span class="question__number" aria-hidden="true">06</span><span>¿Cómo confirmo mi asistencia?</span><span class="question__icon" aria-hidden="true"></span></summary><div class="question__answer"><p>El formulario está en modo de vista previa: puedes completar y revisar tus datos, pero todavía no se envían ni se registra tu asistencia. El canal definitivo de inscripción está por confirmar.</p><button type="button" class="question__preview" data-open-rsvp aria-controls="registro" aria-expanded="false">Ver la vista previa del formulario <span aria-hidden="true">↗</span></button></div></details>
+          <details class="question"><summary><span class="question__number" aria-hidden="true">06</span><span>¿Cómo confirmo mi asistencia?</span><span class="question__icon" aria-hidden="true"></span></summary><div class="question__answer"><p>Completa el formulario de inscripción y pulsa Enviar. Verás una confirmación cuando tu respuesta se haya guardado. Tus datos son privados y se comparten con Sergio para organizar el encuentro.</p><button type="button" class="question__preview" data-open-rsvp aria-controls="registro" aria-expanded="false">Inscribirme al encuentro <span aria-hidden="true">↗</span></button></div></details>
         </div>
       </div>
       <div class="container gathering-signoff"><p>Ser parte. <em>Hacer comunidad.</em></p><a href="#inicio" aria-label="Volver al inicio">VOLVER AL INICIO <span aria-hidden="true">↑</span></a></div>
@@ -416,7 +373,7 @@
   </footer>
 
 
-  <script src="script.js?v=20261020-evento"></script>
+  <script src="script.js?v=20261021-registro"></script>
   <script src="event-showcase.js?v=20261020-evento"></script>
   <script src="assets/pastor-motion.js?v=20261020-spatial" defer></script>
 </body>

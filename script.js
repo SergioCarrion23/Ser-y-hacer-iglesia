@@ -86,15 +86,11 @@
   const glassShell = document.querySelector('.glass-shell');
   const panelContent = document.querySelector('.rsvp-panel__content');
   const rsvpTriggers = [...document.querySelectorAll('[data-open-rsvp]')];
-  const rsvpForm = document.querySelector('#rsvp-form');
-  const editView = document.querySelector('.rsvp-edit');
-  const reviewView = document.querySelector('.rsvp-review');
   let rsvpState = 'closed';
   let returnTo = null;
   let closeAfterOpening = false;
   let openAfterClosing = null;
-  let viewChanging = false;
-  const motionOff = () => !Element.prototype.animate;
+  const motionOff = () => !Element.prototype.animate || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const activeAnimations = new Set();
   const center = rect => ({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
   const animate = (element, frames, options) => {
@@ -130,7 +126,7 @@
     rsvpTriggers.forEach(trigger => trigger.setAttribute('aria-expanded', String(open)));
   }
   function focusForm() {
-    const target = reviewView.hidden ? document.querySelector('#rsvp-title') : document.querySelector('#review-title');
+    const target = document.querySelector('#rsvp-title');
     const rect = rsvpPanel.getBoundingClientRect();
     if (rect.top < 12 || rect.top > window.innerHeight / 2) rsvpPanel.scrollIntoView({ block: 'start', behavior: 'instant' });
     target.focus({ preventScroll: true });
@@ -140,7 +136,7 @@
     const actionsRect = heroActions.getBoundingClientRect();
     if (actionsRect.top >= 0 && actionsRect.bottom <= window.innerHeight) return Promise.resolve();
     // Let visitors travel back from the programme before the glass morph starts.
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: motionOff() ? 'instant' : 'smooth' });
     return new Promise(resolve => {
       const started = performance.now();
       function checkPosition() {
@@ -288,88 +284,5 @@
     if (event.key === 'Escape' && (rsvpState === 'open' || rsvpState === 'opening')) { event.preventDefault(); closeRsvp(); }
   });
 
-  const companions = document.querySelector('.companion-details');
-  const countInput = document.querySelector('#rsvp-count');
-  const minusButton = document.querySelector('[data-count-step="-1"]');
-  const accompanied = () => rsvpForm.elements.accompanied.value === 'yes';
-  function updateParty() {
-    const yes = accompanied();
-    companions.classList.toggle('is-expanded', yes);
-    companions.setAttribute('aria-hidden', String(!yes));
-    companions.inert = !yes;
-    companions.querySelectorAll('input,button').forEach(element => { element.disabled = !yes; });
-    countInput.required = yes;
-    minusButton.disabled = !yes || Number(countInput.value) <= 1;
-    if (!yes) { countInput.removeAttribute('aria-invalid'); document.querySelector('#count-error').hidden = true; }
-  }
-  rsvpForm.querySelectorAll('[name="accompanied"]').forEach(input => input.addEventListener('change', updateParty));
-  document.querySelectorAll('[data-count-step]').forEach(button => button.addEventListener('click', () => {
-    const current = Number(countInput.value);
-    countInput.value = Math.max(1, (Number.isSafeInteger(current) ? current : 1) + Number(button.dataset.countStep));
-    validateField(countInput);
-    updateParty();
-  }));
-  countInput.addEventListener('input', () => { minusButton.disabled = !accompanied() || Number(countInput.value) <= 1; });
-
-  const fields = ['name', 'email', 'phone', 'count'].map(key => document.querySelector(`#rsvp-${key}`));
-  function validateField(field) {
-    if (field.disabled) return true;
-    let error = '';
-    const value = field.value.trim();
-    if (field.id === 'rsvp-name' && value.length < 2) error = 'Escribe tu nombre completo.';
-    if (field.id === 'rsvp-email' && (!value || field.validity.typeMismatch)) error = 'Escribe un correo electrónico válido.';
-    if (field.id === 'rsvp-phone' && (!/^[\d\s().-]+$/.test(value) || !/^(?:09\d{8}|0[2-7]\d{7})$/.test(value.replace(/\D/g, '')))) error = 'Escribe un número local válido, como 099 123 4567.';
-    if (field.id === 'rsvp-count' && (!Number.isSafeInteger(Number(value)) || Number(value) < 1)) error = 'Indica al menos un acompañante.';
-    const message = document.getElementById(field.getAttribute('aria-describedby'));
-    message.textContent = error;
-    message.hidden = !error;
-    if (error) field.setAttribute('aria-invalid', 'true');
-    else field.removeAttribute('aria-invalid');
-    return !error;
-  }
-  fields.forEach(field => {
-    field.addEventListener('blur', () => { if (field.value || field.getAttribute('aria-invalid')) validateField(field); });
-    field.addEventListener('input', () => { if (field.getAttribute('aria-invalid')) validateField(field); });
-  });
-
-  async function switchRsvpView(review) {
-    if (viewChanging || rsvpState !== 'open') return;
-    viewChanging = true;
-    const from = review ? editView : reviewView;
-    const to = review ? reviewView : editView;
-    if (!motionOff()) {
-      const out = animate(from, [{ opacity: 1 }, { opacity: 0, transform: 'translateY(-4px)' }], { duration: 100 });
-      await finish([out]);
-      clearAnimations([out]);
-    }
-    from.hidden = true;
-    to.hidden = false;
-    rsvpPanel.setAttribute('aria-labelledby', review ? 'review-title' : 'rsvp-title');
-    if (!motionOff()) {
-      const incoming = animate(to, [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 220 });
-      await finish([incoming]);
-      clearAnimations([incoming]);
-    }
-    viewChanging = false;
-    if (rsvpState === 'open') (review ? document.querySelector('#review-title') : document.querySelector('#rsvp-name')).focus({ preventScroll: true });
-  }
-  rsvpForm.addEventListener('submit', event => {
-    event.preventDefault();
-    if (rsvpState !== 'open') return;
-    fields.forEach(field => { if (field.type !== 'number') field.value = field.value.trim(); });
-    const invalidFields = fields.filter(field => !validateField(field));
-    if (invalidFields.length) { invalidFields[0].focus(); return; }
-    const data = {
-      name: rsvpForm.elements.name.value,
-      email: rsvpForm.elements.email.value,
-      phone: rsvpForm.elements.phone.value,
-      party: accompanied() ? `Tú + ${countInput.value} ${Number(countInput.value) === 1 ? 'acompañante' : 'acompañantes'}` : 'Solo tú'
-    };
-    Object.entries(data).forEach(([key, value]) => { document.querySelector(`[data-review="${key}"]`).textContent = value; });
-    // Preview only: no endpoint, network request, persistent storage, or confirmation claim.
-    switchRsvpView(true);
-  });
-  document.querySelector('[data-edit-rsvp]').addEventListener('click', () => switchRsvpView(false));
-  rsvpForm.querySelector('[type="submit"]').disabled = false;
-  updateParty();
 })();
+
